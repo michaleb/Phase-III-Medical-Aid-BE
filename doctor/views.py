@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -31,8 +31,11 @@ def doctor_profile_view(request):
     return render(request, 'doctor/doctor-profile.html', context)
     
 
-def doctor_patient_view(request):
-    return render(request, 'doctor/doctor-patient.html')
+def doctor_patient_view(request, pk):
+    
+    patient = get_object_or_404(Patient, id=pk)
+
+    return render(request, 'doctor/doctor-patient.html', context={ 'patient': patient})
 
 def doctor_consultation_view(request):
     return render(request, 'doctor/doctor-consultations.html')
@@ -43,7 +46,7 @@ def doctor_search_view(request):
         patients =Patient.objects.filter(Q(patient__first_name__icontains=search) | Q(patient__last_name__icontains=search))
     else:
         patients = Patient.objects.all()
-
+    print()
     context = {
         'patients': patients,
         
