@@ -114,9 +114,9 @@
             </div>
             <div class=green-bubble>
                 <div class="big-rating">
-                    <p class="large-rating">4.6</p>
+                    <p class="large-rating">{{doctor.rating_reviews}}</p>
                     <img src="{% static 'doctor/images/doctor-dash/stars.svg' %}" alt="star rating">
-                    <p>34 Reviews</p>
+                    <p>{{doctor.reviews}} Reviews</p>
                 </div>
                 <img src="{% static 'doctor/images/doctor-dash/ratings-chart.svg' %}" class="star-chart"
                     alt="chart of various review ratings received">
