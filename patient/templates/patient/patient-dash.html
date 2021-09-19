@@ -64,12 +64,12 @@
         <!--Welcome Message-->
         <section class="welcome bubble-style">
             <div class="welcomeAlerts">
-                <h1>Welcome to your dashboard, Michael</h1>
+                <h1>Welcome to your dashboard, {{ patient.patient.first_name }}</h1>
                 <p>Your last appointment was on <b>6/28/21</b> at <b>8:00am</b> with <b>Dr. Bostick</b></p>
                 <p>You have <b>NO</b> upcoming appointments scheduled</p>
                 <button class="schedule-btn">Make an Appointment</button>
             </div>
-            <img src="{% static 'patient/images/patient-images/michael-profile.svg' %}" alt="profile-image" class="userPic" />
+            <img src="{% static 'patient/images/patient-images/patient-icon.png' %}" alt="profile-image" class="userPic" />
         </section>
         <!--Medical Info-->
         <section class="medical-info">

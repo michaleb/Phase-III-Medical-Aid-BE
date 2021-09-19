@@ -50,8 +50,14 @@ def support_success_view(request):
 
 @login_required
 def patient_dash_view(request):
+    user = User.objects.get(username = request.user.username)
+    patient = Patient.objects.get(patient = user)
+    
+    context = {
+        'patient': patient
+    }
 
-    return render(request, 'patient/patient-dash.html')
+    return render(request, 'patient/patient-dash.html', context)
 
 def patient_doctor_view(request):
     
