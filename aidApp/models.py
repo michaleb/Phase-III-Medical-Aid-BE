@@ -72,7 +72,7 @@ class Patient(models.Model):
 '''
 
 class Health_Practitioner(models.Model):
-
+    
     health_practitioner = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     clinics = models.ForeignKey('Clinic', blank=True, null=True,on_delete=models.CASCADE)
     professional_title = models.CharField(default= "Dr. ", max_length=4)
@@ -81,7 +81,7 @@ class Health_Practitioner(models.Model):
     telephone = models.CharField(max_length=20)
     specialty = models.TextField(max_length=200)
     consultation_times = models.TextField(default="Monday - 10:00am to 11:00am", max_length=600)
-    insurance_accepted = models.CharField(default='Blue Cross', max_length=200)
+    insurance_accepted = models.CharField(default='Blue Cross', max_length=500)
     languages = models.CharField(default='English', max_length=60)
     accepting_new_patients = models.CharField(default='Yes', max_length=3)
     reviews = models.IntegerField(default=29)

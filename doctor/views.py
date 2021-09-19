@@ -6,6 +6,7 @@ from django.core.mail import send_mail
 from django.db.models import Q
 import datetime
 from aidApp.models import Feedback, Patient, Health_Practitioner, Clinic
+from .forms import HealthPractitionerForm # import form
 
 
 # Create your views here.
@@ -119,9 +120,27 @@ def doctor_confirm_view(request):
 def doctor_edit_view(request):
     user = User.objects.get(username = request.user.username)
     doctor = Health_Practitioner.objects.get(health_practitioner = user)
-    
+    instance = get_object_or_404(Health_Practitioner, health_practitioner=request.user)
+
+    if request.method == 'POST':
+        form = HealthPractitionerForm(request.POST)
+        if form.is_valid():
+            doctor.clinics = form.cleaned_data['clinics']
+            doctor.telephone = form.cleaned_data['telephone']
+            doctor.specialty = form.cleaned_data['specialty']
+            doctor.consultation_times = form.cleaned_data['consultation_times']
+            doctor.insurance_accepted = form.cleaned_data['insurance_accepted']
+            doctor.languages = form.cleaned_data['languages']
+            doctor.accepting_new_patients = form.cleaned_data['accepting_new_patients']
+            doctor.save()
+        else:
+            print(form.errors)
+    else:
+        form = HealthPractitionerForm(instance=instance)
+
     context = {
         'doctor': doctor,
+        'form': form
         
     }
     return render(request, 'doctor/doctor-edit.html', context)
