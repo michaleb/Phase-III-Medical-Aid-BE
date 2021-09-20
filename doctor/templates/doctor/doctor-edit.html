@@ -82,13 +82,17 @@
                         <h3>Location</h3>
                         <p>{{ doctor.clinics }}</p>
                     </div>
+                    
                     <div class="new-patients">
                         <h3>Accepting New Patients</h3>
                         <p>{{ doctor.accepting_new_patients }}</p>
                     </div>
                     <div class="insurance">
                         <h3>Insurance Accepted</h3>
-                        <p>{{ doctor.insurance_accepted }}</p>
+                        {% for item in insurance_accepted  %}
+                            <p>{{ item }}</p>
+                        {% endfor %}
+                         {% comment %} <p>{{ doctor.insurance_accepted }}</p> {% endcomment %}
                     </div>
                     <div class="big-rating">
                         <h3>Current Rating</h3>

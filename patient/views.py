@@ -66,3 +66,6 @@ def patient_doctor_view(request):
         
     }
     return render(request, 'patient/patient-doctor.html', context)
+
+def patient_profile_view(request):
+    return render(request, 'patient/patient-profile.html')

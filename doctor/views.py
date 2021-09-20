@@ -137,10 +137,12 @@ def doctor_edit_view(request):
             print(form.errors)
     else:
         form = HealthPractitionerForm(instance=instance)
+    insurance_accepted = doctor.insurance_accepted
+    insurance_accepted = eval(insurance_accepted)
 
     context = {
         'doctor': doctor,
-        'form': form
-        
+        'form': form,
+        'insurance_accepted': insurance_accepted,
     }
     return render(request, 'doctor/doctor-edit.html', context)

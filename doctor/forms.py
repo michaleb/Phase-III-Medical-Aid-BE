@@ -2,9 +2,9 @@ from django import forms
 from aidApp.models import Health_Practitioner
 
 class HealthPractitionerForm(forms.ModelForm):
-    CHOICES = (('1', 'Blue Cross'), ('2', 'Blue Shield'), ('3', 'Cigna'), 
-              ('4', 'Health Net'), ('5', 'Medicare'), ('6', 'World Health'), 
-              ('7', 'Care First'))
+    CHOICES = (('Blue Cross', 'Blue Cross'), ('Blue Shield', 'Blue Shield'), ('Cigna', 'Cigna'), 
+              ('Health Net', 'Health Net'), ('Medicare', 'Medicare'), ('World Health', 'World Health'), 
+              ('Care First', 'Care First'))
 
     insurance_accepted = forms.MultipleChoiceField(choices = CHOICES)
 
