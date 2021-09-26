@@ -91,7 +91,7 @@ class Health_Practitioner(models.Model):
     appointments_approved = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.health_practitioner.get_full_name()
+        return self.specialty()
     
 
 class Feedback(models.Model):

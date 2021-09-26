@@ -60,9 +60,17 @@ def patient_dash_view(request):
     return render(request, 'patient/patient-dash.html', context)
 
 def patient_doctor_view(request):
+    if request.method == "POST":
+        search = request.POST.get('search')
+        # specialty_search = request.POST.get('specialty')
+        doctors = Health_Practitioner.objects.filter(Q(health_practitioner__first_name__icontains=search) \
+                  | Q(health_practitioner__last_name__icontains=search) | Q(clinics__name__icontains=search) \
+                  | Q(specialty__icontains=search))
+    else:
+        doctors = Health_Practitioner.objects.all()
     
     context = {
-        'doctors': Health_Practitioner.objects.all(),
+        'doctors': doctors,
         
     }
     return render(request, 'patient/patient-doctor.html', context)
