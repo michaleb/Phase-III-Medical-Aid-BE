@@ -7,7 +7,7 @@ from django.db.models import Q
 import datetime
 from aidApp.models import Feedback, Patient, Health_Practitioner, Clinic
 from .forms import HealthPractitionerForm # import form
-
+import ast
 
 # Create your views here.
 
@@ -121,7 +121,9 @@ def doctor_edit_view(request):
     user = User.objects.get(username = request.user.username)
     doctor = Health_Practitioner.objects.get(health_practitioner = user)
     instance = get_object_or_404(Health_Practitioner, health_practitioner=request.user)
-
+    #insurance_accepted = doctor.insurance_accepted
+    insurance_accepted = ast.literal_eval(doctor.insurance_accepted)
+    
     if request.method == 'POST':
         form = HealthPractitionerForm(request.POST)
         if form.is_valid():
@@ -137,12 +139,12 @@ def doctor_edit_view(request):
             print(form.errors)
     else:
         form = HealthPractitionerForm(instance=instance)
-    insurance_accepted = doctor.insurance_accepted
-    insurance_accepted = eval(insurance_accepted)
-
+       
+    
     context = {
         'doctor': doctor,
         'form': form,
         'insurance_accepted': insurance_accepted,
     }
+
     return render(request, 'doctor/doctor-edit.html', context)
