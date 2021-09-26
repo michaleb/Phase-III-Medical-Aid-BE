@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -76,7 +76,22 @@ def patient_doctor_view(request):
     return render(request, 'patient/patient-doctor.html', context)
 
 def patient_profile_view(request):
-    return render(request, 'patient/patient-profile.html')
+    user = User.objects.get(username = request.user.username)
+    patient = Patient.objects.get(patient = user)
+    instance = get_object_or_404(Patient, patient=request.user)
+
+    if request.method == 'POST':
+        patient.D_O_B = request.POST.get('birthdate')
+        patient.sex = request.POST.get('gender')
+        patient.marital_status = request.POST.get('marital')
+        patient.save()
+
+
+    context = {
+        'patient': patient,
+        
+    }
+    return render(request, 'patient/patient-profile.html', context)
 
 def patient_clinic_view(request):
     return render(request, 'patient/patient-clinic.html')

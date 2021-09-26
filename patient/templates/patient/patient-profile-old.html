@@ -1,67 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-{% load static  %}
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient - Century Health</title>
-    <link rel="shortcut icon" href="{% static 'patient/images/patient-images/favicon.svg' %}">
+    <link rel="shortcut icon" href="/images/admin-dash/favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'patient/css/patient-profile.css' %}">
-    <script src="{% static 'patient/js/patient-profile.js' %}" defer></script>
+    <link rel="stylesheet" href="patient-profile.css">
+    <script src="patient-profile.js" defer></script>
 </head>
 
 <body>
     <div class="wrapper">
         <!--Header-->
-        <header><a href="{% url 'homepage' %}"><img src="{% static 'patient/images/patient-images/logo.svg' %}" class="logo"></a>
-            <button class="hamburger" id="hamburger"><img src="{% static 'patient/images/logo/fi_menu.svg' %}"></button>
+        <header><a href="#"><img src="../images/patient-images/logo.svg" class="logo"></a>
+            <button class="hamburger" id="hamburger"><img src="../images/admin-dash/fi_menu.svg"></button>
         </header>
         <!--Navigation-->
         <nav>
             <ul class="nav-ul" id="nav-ul">
                 <li>
-                    <a href="{% url 'patient-dash' %}">
-                        <img src="{% static 'patient/images/patient-profile-img/dashboard-white.svg' %}" alt="dashboard icon">
+                    <a href="patient-dash.html">
+                        <img src="../images/patient-profile-img/dashboard-white.svg" alt="dashboard icon">
                         Dashboard</a>
                 </li>
                 <li>
-                    <a href="{% url 'patient-profile' %}" class="active-link">
-                        <img src="{% static 'patient/images/patient-profile-img/profile-icon-yellow.svg' %}" alt="profile icon">
+                    <a href="patient-profile.html" class="active-link">
+                        <img src="../images/patient-profile-img/profile-icon-yellow.svg" alt="profile icon">
                         Profile</a>
                 </li>
                 <li>
-                    <a href="{% url 'patient-doctor' %}">
-                        <img src="{% static 'patient/images/patient-images/doctor-icon.svg' %}" alt="doctor icon">
+                    <a href="patient-doctor.html">
+                        <img src="../images/patient-images/doctor-icon.svg" alt="doctor icon">
                         Talk to a Doctor</a>
                 </li>
                 <li>
-                    <a href="{% url 'patient-clinic' %}">
-                        <img src="{% static 'patient/images/patient-images/clinic-icon.svg' %}" alt="clinics icon">
+                    <a href="patient-clinic.html">
+                        <img src="../images/patient-images/clinic-icon.svg" alt="clinics icon">
                         Pharmacies and Clinics</a>
                 </li>
 
                 <li>
-                    <a href="{% url 'support' %}">
-                        <img src="{% static 'patient/images/patient-images/contact-icon.svg' %}" alt="contact icon">
+                    <a href="patient-support.html">
+                        <img src="../images/patient-images/contact-icon.svg" alt="contact icon">
                         Contact Us / Support</a>
                 </li>
                 <li>
-                    <a href="{% url 'users:logout' %}">
-                        <img src="{% static 'patient/images/patient-images/logout.svg' %}" alt="logout icon" />
+                    <a href="../index.html">
+                        <img src="../images/patient-images/logout.svg" alt="logout icon" />
                         Logout</a>
                 </li>
             </ul>
         </nav>
         <main>
-            <a class="back" href="{% url 'patient-dash' %}">< Back</a>
+            <a class="back" href="patient-dash.html">< Back</a>
             <h1 class="main-heading">Patient Profile</h1>
-            <form method = "POST">
-            {% csrf_token %}
+            <form>
                 <!--Patient Info-->
                 <section class="patient-info-block">
                     <div class="heading">
@@ -69,8 +67,8 @@
                     </div>
                     <div class="personal-info bubble-style">
                         <div class="patient">
-                            <img src="{% static 'patient/images/patient-images/patient-icon.png' %}" alt="profile-image" class="userPic" />
-                            <p>{{ patient.patient.first_name }} {{ patient.patient.last_name }}</p>
+                            <img src="../images/patient-images/michael-profile.svg" alt="profile-image" class="userPic" />
+                            <p>Michael Bostick</p>
                         </div>
                         <div class="patient-info">
                             <div>
@@ -94,11 +92,11 @@
                             </select></div>
                             <div>
                             <label for="gender">Gender</label><br>
-                            <input id="gender" type="text" name="gender" value = {{ patient.sex }}>
+                            <input id="gender" type="text" name="gender">
                             </div>
                             <div>
                             <label for="martial-status">Marital status</label><br>
-                            <input id="martial-status" type="text" name="marital" value = {{ patient.marital_status }}></div>
+                            <input id="martial-status" type="text" name="marital"></div>
                         </div>
                     </div>
                 </section>
