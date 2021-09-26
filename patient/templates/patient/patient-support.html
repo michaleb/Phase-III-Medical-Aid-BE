@@ -30,7 +30,7 @@
                         Dashboard</a>
                 </li>
                 <li>
-                    <a href="patient-profile.html">
+                    <a href="{% url 'patient-profile' %}">
                         <img src="{% static 'patient/images/patient-images/profile-icon.svg' %}" alt="profile icon">
                         Profile</a>
                 </li>
@@ -40,7 +40,7 @@
                         Talk to a Doctor</a>
                 </li>
                 <li>
-                    <a href="patient-clinic.html">
+                    <a href="{% url 'patient-clinic' %}">
                         <img src="{% static 'patient/images/patient-images/clinic-icon.svg' %}" alt="clinics icon">
                         Pharmacies and Clinics</a>
                 </li>
@@ -67,7 +67,7 @@
                     {% endfor %}
                 </ul>
             {% endif %}
-            <form action="{% url 'support-success' %}" method="POST">
+            <form action="" method="POST">
                 {% csrf_token %}
                 <div>
                 <label for="fullname">Full Name </label><br>
