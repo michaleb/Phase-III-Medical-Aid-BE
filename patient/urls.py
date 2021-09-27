@@ -7,6 +7,7 @@ from .views import (
     patient_doctor_view,
     patient_profile_view,
     patient_clinic_view,
+    clinic_info_view,
 )
 
 urlpatterns = [
@@ -16,5 +17,6 @@ urlpatterns = [
     path('patient-doctor/', patient_doctor_view, name = "patient-doctor"),
     path('patient-profile/', patient_profile_view, name = "patient-profile"),
     path('patient-clinic/', patient_clinic_view, name = "patient-clinic"),
+    path('clinic-info/', clinic_info_view, name = "clinic-info"),
         
 ]

@@ -95,3 +95,6 @@ def patient_profile_view(request):
 
 def patient_clinic_view(request):
     return render(request, 'patient/patient-clinic.html')
+
+def clinic_info_view(request):
+    return render(request, 'patient/patient-clinic-info.html')
