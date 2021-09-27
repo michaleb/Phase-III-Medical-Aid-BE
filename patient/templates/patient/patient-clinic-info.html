@@ -79,14 +79,16 @@
                     <div>
                         <div class="hours">
                             <p><b>Pharmacy or Clinic Hours</b></p>
-                            <p>Monday through Friday: 9am to 7pm <br>
-                                Saturday: 9am to 2pm<br>
-                                Sundays: 10am to 1pm
+                            <p>{{ place.hours }} <br>
+                                {% comment %} Saturday: 9am to 2pm<br>
+                                Sundays: 10am to 1pm {% endcomment %}
                             </p>
                         </div>
                         <div class="holiday-hours">
                             <p><b>Major Holidays</b></p>
-                            <p>Mostly 10am to 1pm.</p>
+                            <p>Generally 10am to 2pm.<br>
+                                Check with us for holiday schedules.
+                            </p>
                         </div>
                         <div class="closed">
                             <p><b>Closed</b></p>
