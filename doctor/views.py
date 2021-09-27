@@ -24,9 +24,10 @@ def doctor_dash_view(request):
 def doctor_profile_view(request):
     user = User.objects.get(username = request.user.username)
     doctor = Health_Practitioner.objects.get(health_practitioner = user)
-    
+    insurance_accepted = ast.literal_eval(doctor.insurance_accepted)
     context = {
         'doctor': doctor,
+        'insurance_accepted': insurance_accepted
         
     }
     return render(request, 'doctor/doctor-profile.html', context)
