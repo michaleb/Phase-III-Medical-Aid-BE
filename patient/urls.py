@@ -17,6 +17,6 @@ urlpatterns = [
     path('patient-doctor/', patient_doctor_view, name = "patient-doctor"),
     path('patient-profile/', patient_profile_view, name = "patient-profile"),
     path('patient-clinic/', patient_clinic_view, name = "patient-clinic"),
-    path('clinic-info/', clinic_info_view, name = "clinic-info"),
+    path('clinic-info/<int:pk>/', clinic_info_view, name = "clinic-info"),
         
 ]

@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.db.models import Q
 import datetime
-from aidApp.models import Feedback, Patient, Health_Practitioner
+from aidApp.models import Feedback, Patient, Health_Practitioner, Clinic, Pharmacy
 
 # Create your views here.
 
@@ -94,7 +94,36 @@ def patient_profile_view(request):
     return render(request, 'patient/patient-profile.html', context)
 
 def patient_clinic_view(request):
-    return render(request, 'patient/patient-clinic.html')
+    if request.method == "POST":
+        search = request.POST.get('search')
+        if request.POST.get('clinic-pharmacy') == 'clinics':
+            query = Clinic.objects.filter(name__icontains=search)
+        elif request.POST.get('clinic-pharmacy') == 'pharmacies':
+            query = Pharmacy.objects.filter(name__icontains=search)
+    else:
+        query = Clinic.objects.all()
+    
+    context = {
 
-def clinic_info_view(request):
-    return render(request, 'patient/patient-clinic-info.html')
+        'query': query
+
+    }
+
+
+    return render(request, 'patient/patient-clinic.html', context)
+
+def clinic_info_view(request, pk):
+    
+    clinic = get_object_or_404(Clinic, id=pk)
+    pharmacy = get_object_or_404(Pharmacy, id=pk)
+
+    context = {
+
+        'clinic': clinic,
+        'pharmacy': pharmacy,
+
+
+
+    }
+
+    return render(request, 'patient/patient-clinic-info.html', context)

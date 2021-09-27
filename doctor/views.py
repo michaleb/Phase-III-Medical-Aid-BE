@@ -44,7 +44,7 @@ def doctor_consultation_view(request):
 def doctor_search_view(request):
     if request.method == "POST":
         search = request.POST.get('search')
-        patients =Patient.objects.filter(Q(patient__first_name__icontains=search) | Q(patient__last_name__icontains=search))
+        patients = Patient.objects.filter(Q(patient__first_name__icontains=search) | Q(patient__last_name__icontains=search))
     else:
         patients = Patient.objects.all()
     print()

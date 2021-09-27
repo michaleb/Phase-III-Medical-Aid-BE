@@ -60,18 +60,22 @@
         <main>
             <a class="back" href="{% url 'patient-dash' %}">< Back</a>
             <h1 class="main-heading">Search Pharmacies and Clinics</h1>
-            <div class="filter">
+            {% comment %} <div class="filter">
                 <a class="pharmacies" href="#"><h3>Pharmacies</h3></a>
                 <a class="clinics" href="#"><h3>Clinics</h3></a>
-            </div>
+            </div> {% endcomment %}
+            <form method="POST">
+            {% csrf_token %}
             <div class="search">
-                <input id="search" type="text" name="search" placeholder="Enter name, location or pharmacy">
+                <input id="search" type="text" name="search" placeholder="Enter name of clinic or pharmacy">
                 <select id="clinic-pharmacy" name="clinic-pharmacy">
-                    <option value="">Clinics</option>
-                    <option value="">Pharmacies</option>
+                    <option value="clinics">Clinics</option>
+                    <option value="pharmacies">Pharmacies</option>
                 </select>
                 <button class="search-btn">Search</button>
             </div>
+            </form>
+            <!-- Results -->
             <section class="results">
                 <h2 class="heading">Results</h2>
                 <div class="bubble-heading">
@@ -79,12 +83,16 @@
                     <p><b>Location</b></p>
                     <p><b>Phone</b></p>
                 </div>
+                {% for item in query  %}
+                <a href="{% url 'clinic-info' item.id %}">
                 <div class="results-bubble bubble-style">
-                    <p class="result"><b>Giant Pharmacy #3201</b></p>
-                    <p class="clinic">4517 Washington Ave.<br>Manchester, Kentucky 39495</p>
-                    <p class="phone">(455) 888-3884</p>
+                    <p class="result"><b>{{ item.name }}</b></p>
+                    <p class="clinic">{{ item.address }}</p>
+                    <p class="phone">{{ item.telephone }}</p>
                 </div>
-                <div class="results-bubble bubble-style">
+                </a>
+                {% endfor %}
+                {% comment %} <div class="results-bubble bubble-style">
                     <p class="result"><b>Quark’s Pharmacy</b></p>
                     <p class="clinic">2118 Thornridge Cir.<br>Syracuse, Connecticut 35624</p>
                     <p class="phone">(455) 888-3884</p>
@@ -118,7 +126,7 @@
                     <p class="result"><b>Klingon Clinic</b></p>
                     <p class="clinic">6391 Elgin St.<br>Celina, Delaware 10299</p>
                     <p class="phone">(455) 888-3884</p>
-                </div>
+                </div> {% endcomment %}
             </section>
         </main>
     </div>
