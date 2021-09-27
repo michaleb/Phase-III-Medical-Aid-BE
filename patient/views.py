@@ -102,28 +102,32 @@ def patient_clinic_view(request):
             query = Pharmacy.objects.filter(name__icontains=search)
     else:
         query = Clinic.objects.all()
+
+    location = request.POST.get('clinic-pharmacy')
     
     context = {
 
-        'query': query
+        'query': query,
+        'location': location,
 
     }
-
-
+    
     return render(request, 'patient/patient-clinic.html', context)
 
-def clinic_info_view(request, pk):
-    
-    clinic = get_object_or_404(Clinic, id=pk)
-    pharmacy = get_object_or_404(Pharmacy, id=pk)
+def clinic_info_view(request, location, pk):
+    if location == 'clinics':
+        place = get_object_or_404(Clinic, id=pk)
+    elif location == 'pharmacies':
+        place = get_object_or_404(Pharmacy, id=pk)
+    else:
+        place = get_object_or_404(Clinic, id=pk)
 
     context = {
 
-        'clinic': clinic,
-        'pharmacy': pharmacy,
+        'place': place,
+        
+        
 
-
-
-    }
+     }
 
     return render(request, 'patient/patient-clinic-info.html', context)

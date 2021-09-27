@@ -135,6 +135,7 @@ def doctor_edit_view(request):
             doctor.languages = form.cleaned_data['languages']
             doctor.accepting_new_patients = form.cleaned_data['accepting_new_patients']
             doctor.save()
+            return redirect('doctor-edit')
         else:
             print(form.errors)
     else:

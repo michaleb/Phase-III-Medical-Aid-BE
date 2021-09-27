@@ -65,11 +65,11 @@
                     <img src="{% static 'patient/images/patient-clinic-info-img/pharmacy.svg' %}">
                     <div class="location-details">
                         <div class="address">
-                            <p><b>Quark's Pharmacy</b></p>
-                            <p>4517 Washington Ave.<br>
-                                Manchester, Kentucky 39495<br>
+                            <p><b>{{ place.name }}</b></p>
+                            <p>{{ place.address}}<br>
+                                
                                 <br>
-                                (455) 888-3884
+                                {{ place.telephone }}
                             </p>
                         </div>
                         <button class="directions-btn">Get Directions</button>
@@ -78,7 +78,7 @@
                 <section class="other-details">
                     <div>
                         <div class="hours">
-                            <p><b>Pharmacy Hours</b></p>
+                            <p><b>Pharmacy or Clinic Hours</b></p>
                             <p>Monday through Friday: 9am to 7pm <br>
                                 Saturday: 9am to 2pm<br>
                                 Sundays: 10am to 1pm
