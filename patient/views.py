@@ -61,11 +61,19 @@ def patient_dash_view(request):
 
 def patient_doctor_view(request):
     if request.method == "POST":
+        specialty_search = request.POST.get('specialty')
         search = request.POST.get('search')
-        # specialty_search = request.POST.get('specialty')
+
+        # to prevent none value being given if user does not enter anything in the field
+        if not search:
+            search = specialty_search
+        if not specialty_search:
+            specialty_search = search
+
         doctors = Health_Practitioner.objects.filter(Q(health_practitioner__first_name__icontains=search) \
                   | Q(health_practitioner__last_name__icontains=search) | Q(clinics__name__icontains=search) \
-                  | Q(specialty__icontains=search))
+                  | Q(specialty__in=(specialty_search, search)))
+        
     else:
         doctors = Health_Practitioner.objects.all()
     
@@ -78,8 +86,7 @@ def patient_doctor_view(request):
 def patient_profile_view(request):
     user = User.objects.get(username = request.user.username)
     patient = Patient.objects.get(patient = user)
-    instance = get_object_or_404(Patient, patient=request.user)
-
+    
     if request.method == 'POST':
         patient.D_O_B = request.POST.get('birthdate')
         patient.sex = request.POST.get('gender')
@@ -100,31 +107,31 @@ def patient_clinic_view(request):
             query = Clinic.objects.filter(name__icontains=search)
         elif request.POST.get('clinic-pharmacy') == 'pharmacies':
             query = Pharmacy.objects.filter(name__icontains=search)
-        location = request.POST.get('clinic-pharmacy')
+        category = request.POST.get('clinic-pharmacy')
     else:
         query = Pharmacy.objects.all()
-        location = 'pharmacies'
+        category = 'pharmacies'
     
     
     context = {
 
         'query': query,
-        'location': location,
+        'category': category,
 
     }
     
     return render(request, 'patient/patient-clinic.html', context)
 
-def clinic_info_view(request, location, pk):
+def clinic_info_view(request, category, pk):
     
-    if location == 'pharmacies':
-        place = get_object_or_404(Pharmacy, id=pk)
+    if category == 'pharmacies':
+        location = get_object_or_404(Pharmacy, id=pk)
     else:
-        place = get_object_or_404(Clinic, id=pk)
+        location = get_object_or_404(Clinic, id=pk)
 
     context = {
 
-        'place': place,
+        'location': location,
         
         
 

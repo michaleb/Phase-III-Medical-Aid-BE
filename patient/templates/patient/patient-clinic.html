@@ -84,11 +84,11 @@
                     <p><b>Phone</b></p>
                 </div>
                 {% for item in query  %}
-                <a href="{% url 'clinic-info' location item.id %}">
+                <a href="{% url 'clinic-info' category item.id %}">
                 <div class="results-bubble bubble-style">
                     <p class="result"><b>{{ item.name }}</b></p>
                     <p class="clinic">{{ item.address }}</p>
-                    <p class="phone">{{ item.telephone }}</p>{{location}}
+                    <p class="phone">{{ item.telephone }}</p>{{ category }}
                 </div>
                 </a>
                 {% endfor %}
