@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.db.models import Q
 import datetime
+from django.utils import dateparse
+from django.utils.dateparse import parse_date
 from aidApp.models import Feedback, Patient, Health_Practitioner, Clinic, Pharmacy
 
 # Create your views here.
@@ -86,7 +88,9 @@ def patient_doctor_view(request):
 def patient_profile_view(request):
     user = User.objects.get(username = request.user.username)
     patient = Patient.objects.get(patient = user)
-    
+    bday = parse_date(patient.D_O_B)
+    print(bday.year)
+
     if request.method == 'POST':
         patient.D_O_B = request.POST.get('birthdate')
         patient.sex = request.POST.get('gender')

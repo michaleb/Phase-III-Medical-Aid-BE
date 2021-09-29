@@ -6,6 +6,7 @@ from django.db.models.deletion import CASCADE, SET, SET_NULL
 from django.db.models.fields.related import ForeignKey, OneToOneField
 from django.forms import widgets
 import datetime
+from django.utils.dateparse import parse_date
 from phone_field import PhoneField
 
 class FAQ(models.Model):
@@ -37,7 +38,8 @@ class Patient(models.Model):
     
     patient = models.OneToOneField(User, on_delete=models.CASCADE)
     telephone = PhoneField(blank=True, help_text='Patient phone number')
-    D_O_B = models.DateField(default=tz.now)
+    # D_O_B = models.DateField(default=tz.now)
+    D_O_B = models.CharField(max_length=20)
     # age = models.CharField(max_length=5)
     registration_date = models.DateTimeField(auto_now_add=True)
     sex = models.CharField(max_length=20)
@@ -45,7 +47,7 @@ class Patient(models.Model):
     # medical_history = models.TextField(blank=True, null=True)
     @property
     def age(self):
-        return tz.now().year - self.D_O_B.year
+        return tz.now().year - parse_date(self.D_O_B).year
     
     def __str__(self):
         return self.patient.get_full_name() 
