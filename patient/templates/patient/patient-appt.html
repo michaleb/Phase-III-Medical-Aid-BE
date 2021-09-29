@@ -45,7 +45,7 @@
                         Dashboard</a>
                 </li>
                 <li>
-                    <a href="patient-profile.html">
+                    <a href="{% url 'patient-profile' %}">
                         <img src="{% static 'patient/images/patient-images/profile-icon.svg' %}" alt="profile icon">
                         Profile</a>
                 </li>
@@ -55,7 +55,7 @@
                         Talk to a Doctor</a>
                 </li>
                 <li>
-                    <a href="patient-clinic.html">
+                    <a href="{% url 'patient-clinic' %}">
                         <img src="{% static 'patient/images/patient-images/clinic-icon.svg' %}" alt="clinics icon">
                         Pharmacies and Clinics</a>
                 </li>
@@ -119,9 +119,14 @@
             </section>
             {% if messages %} 
             <ul class="message">
-                {% for message in messages %}
-                <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+                {% for message in messages %} 
+                <li{% ifequal message.tags error %}></li> 
+                <div class="alert alert-error">{{message}}</div> 
+                {% else %} 
+                <div class="alert alert-success">{{message}}</div>
+                {% endifequal %}> 
                 {% endfor %}
+            
             </ul>
                
             {% else %}
@@ -147,7 +152,7 @@
                                     });
                                 </script>
                             </div>
-                            <p style = "color: var(--primaryColor);", style = "text-align:center"><b>Please select current or future date.</b></p> 
+                            <p style = "color: var(--primaryColor);", style = "text-align:center">Please select current or future date.</p> 
                             
                         </div>
                     </div>
@@ -156,20 +161,10 @@
                         <div class="available-times-wrapper border-style">
                             <select  size='12' name="timeslots" id="timeslots"> 
                                 <div class="available-times"> 
-                                    {% if form.booked_timeslots %} 
-                                        {% for timeslot in form.timeslots %} 
-                                            {% if timeslot in form.booked_timeslots %}
-                                                <option value="" disabled>{{timeslot}}</option>
-                                            {% else %}
-                                                
-                                                <option value="">{{timeslot}}</option>
-                                            {% endif %}
-                                        {% endfor %}
-                                    {% else %}
-                                    {% for timeslot in form.timeslots %}
-                                        <option value=>{{timeslot}}</option> 
-                                    {% endfor %} 
-                                    {% endif %}     
+                                    {% for timeslot in form.timeslots %} 
+                                        <option value="">{{timeslot}}
+                                    {% endfor %}
+                                        
                                 </div>                          
                             </select>        
                         </div>

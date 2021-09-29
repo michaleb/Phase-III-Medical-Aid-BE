@@ -51,6 +51,24 @@ class Patient(models.Model):
         return self.patient.get_full_name() 
 
 
+class Patient_Contact_Info(models.Model):
+    
+    patient = models.ForeignKey('Patient', null=True, on_delete=models.CASCADE)
+    address_1 = models.TextField(blank=True, null=True)
+    address_2 = models.TextField(blank=True, null=True)
+    city = models.TextField(blank=True, null=True)
+    state = models.TextField(blank=True, null=True)
+    zip_code = models.TextField(blank=True, null=True)
+    ec_name = models.TextField(blank=True, null=True) # ec - Emergency Contact
+    ec_phone_number = models.TextField(blank=True, null=True)
+    ec_address_1 = models.TextField(blank=True, null=True)
+    ec_address_2 = models.TextField(blank=True, null=True)
+    ec_city = models.TextField(blank=True, null=True)
+    ec_state = models.TextField(blank=True, null=True)
+    ec_zip_code = models.TextField(blank=True, null=True)
+
+
+
 class Medical_History(models.Model):
 
     #permissions = (('can_edit_medical_history', 'Can update medical history'),)

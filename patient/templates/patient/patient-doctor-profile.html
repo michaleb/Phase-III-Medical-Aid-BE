@@ -19,7 +19,7 @@
     <div class="wrapper">
         <!--Header-->
         <header><a href="#"><img src="{% static 'patient/images/patient-images/logo.svg' %}" class="logo"></a>
-            <button class="hamburger" id="hamburger"><img src="{% static 'aidApp/images/admin-dash/fi_menu.svg' %}"></button>
+            <button class="hamburger" id="hamburger"><img src="{% static 'patient/images/logo/fi_menu.svg' %}"></button>
         </header>
         <!--Navigation-->
         <nav>
@@ -30,7 +30,7 @@
                         Dashboard</a>
                 </li>
                 <li>
-                    <a href="/patient/patient-profile.html">
+                    <a href="{% url 'patient-profile' %}">
                         <img src="{% static 'patient/images/patient-images/profile-icon.svg' %}" alt="profile icon">
                         Profile</a>
                 </li>
@@ -40,7 +40,7 @@
                         Talk to a Doctor</a>
                 </li>
                 <li>
-                    <a href="patient-clinic.html">
+                    <a href="{% url 'patient-clinic' %}">
                         <img src="{% static 'patient/images/patient-images/clinic-icon.svg' %}" alt="clinics icon">
                         Pharmacies and Clinics</a>
                 </li>
