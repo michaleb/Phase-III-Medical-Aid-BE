@@ -1,5 +1,5 @@
 from email.headerregistry import Group
-from aidApp.models import Health_Practitioner, Appointment, Feedback, Contact, FAQ, Patient, Pharmacy, Clinic, Medical_History  
+from aidApp.models import Health_Practitioner, Appointment, Feedback, Contact, FAQ, Patient, Pharmacy, Clinic, Medical_History, Patient_Contact_Info  
 from django.contrib import admin
 from .models import FAQ
 from django.contrib.auth.models import User, Group
@@ -14,6 +14,7 @@ admin.site.register(Contact)
 admin.site.register(Feedback)
 admin.site.register(Appointment)
 admin.site.register(Medical_History)
+admin.site.register(Patient_Contact_Info)
 
 class Patients_Admin(admin.ModelAdmin):
     list_display = ('__str__', 'D_O_B', 'telephone')
