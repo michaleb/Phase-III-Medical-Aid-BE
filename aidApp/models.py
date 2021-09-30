@@ -6,6 +6,7 @@ from django.db.models.deletion import CASCADE, SET, SET_NULL
 from django.db.models.fields.related import ForeignKey, OneToOneField
 from django.forms import widgets
 import datetime
+from django.utils.dateparse import parse_date
 from phone_field import PhoneField
 
 class FAQ(models.Model):
@@ -37,7 +38,8 @@ class Patient(models.Model):
     
     patient = models.OneToOneField(User, on_delete=models.CASCADE)
     telephone = PhoneField(blank=True, help_text='Patient phone number')
-    D_O_B = models.DateField(default=tz.now)
+    # D_O_B = models.DateField(default=tz.now)
+    D_O_B = models.CharField(max_length=20)
     # age = models.CharField(max_length=5)
     registration_date = models.DateTimeField(auto_now_add=True)
     sex = models.CharField(max_length=20)
@@ -45,7 +47,7 @@ class Patient(models.Model):
     # medical_history = models.TextField(blank=True, null=True)
     @property
     def age(self):
-        return tz.now().year - self.D_O_B.year
+        return tz.now().year - parse_date(self.D_O_B).year
     
     def __str__(self):
         return self.patient.get_full_name() 
@@ -90,7 +92,7 @@ class Medical_History(models.Model):
 
 
 class Health_Practitioner(models.Model):
-
+    
     health_practitioner = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     clinics = models.ForeignKey('Clinic', blank=True, null=True,on_delete=models.CASCADE)
     professional_title = models.CharField(default= "Dr. ", max_length=4)
@@ -98,7 +100,7 @@ class Health_Practitioner(models.Model):
     telephone = models.CharField(max_length=20)
     specialty = models.TextField(max_length=200)
     consultation_times = models.TextField(default="Monday - 10:00am to 11:00am", max_length=600)
-    insurance_accepted = models.CharField(default='Blue Cross', max_length=200)
+    insurance_accepted = models.CharField(default='Blue Cross', max_length=500)
     languages = models.CharField(default='English', max_length=60)
     accepting_new_patients = models.CharField(default='Yes', max_length=3)
     reviews = models.IntegerField(default=29)
@@ -108,7 +110,7 @@ class Health_Practitioner(models.Model):
     appointments_approved = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.health_practitioner.get_full_name()
+        return self.specialty()
     
 
 class Feedback(models.Model):

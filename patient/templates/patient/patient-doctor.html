@@ -31,7 +31,7 @@
                         Dashboard</a>
                 </li>
                 <li>
-                    <a href="patient-profile.html">
+                    <a href="{% url 'patient-profile' %}">
                         <img src="{% static 'patient/images/patient-images/profile-icon.svg' %}" alt="profile icon">
                         Profile</a>
                 </li>
@@ -41,7 +41,7 @@
                         Talk to a Doctor</a>
                 </li>
                 <li>
-                    <a href="patient-clinic.html">
+                    <a href="{% url 'patient-clinic' %}">
                         <img src="{% static 'patient/images/patient-images/clinic-icon.svg' %}" alt="clinics icon">
                         Pharmacies and Clinics</a>
                 </li>
@@ -61,19 +61,24 @@
         <main>
             <a class="back" href="{% url 'patient-dash' %}">< Back</a>
             <h1 class="main-heading">Talk to a Doctor</h1>
+             <!-- Doctor Search Form -->
+            <form action="" method="POST">
+            {% csrf_token %}
             <div class="search">
                 <input id="search" type="text" name="search" placeholder="Name or Location">
-                <select id="speciality" name="speciality">
-                    <option value="">Choose a Speciality</option>
-                    <option value=""></option>
-                    <option value=""></option>
-                    <option value=""></option>
-                    <option value=""></option>
-                    <option value=""></option>
-                    <option value=""></option>
-                </select>
+                <select id="specialty" name="specialty">
+                    <option value="">Choose a Specialty</option>
+                    <option value="Dentist">Dentist</option>
+                    <option value="Family Health">Family Health</option>
+                    <option value="General Practitioner">General Practitioner</option>
+                    <option value="Internal Medicine">Internal Medicine</option>
+                    <option value="OB/GYN">OB/GYN</option>
+                    <option value="Pediatrics">Pediatrics</option>
+                </select>               
                 <button class="search-btn">Search</button>
             </div>
+            </form>
+            <!-- Results -->
             <section class="border-style visits">
                 <div class="bubble-heading">
                     <p><b>Name</b></p>
@@ -83,7 +88,7 @@
                 {% for doctor in doctors %}
                 <a class="doctors-bubble bubble-style">
                     <div class="doctor">
-                        <img src="{% static 'doctor/images/doctor-dash/user-icon.svg' %}" alt="image of doctor">
+                        <img src="{% static 'patient/images/patient-doctor-img/patient-doctor-icon.png' %}" alt="image of doctor">
                         <div class="doctor-info">
                             <p><b>Dr. {{doctor.health_practitioner.last_name}}</b></p>
                             <p>{{doctor.specialty}}</p>

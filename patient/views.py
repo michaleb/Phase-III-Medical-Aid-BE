@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.mail import send_mail, get_connection
 from django.db.models import Q
+import datetime
+from django.utils.dateparse import parse_date
 from django.conf import settings
 from django.template.defaulttags import register
 from datetime import date, timedelta
@@ -53,18 +55,56 @@ def support_success_view(request):
 
 @login_required
 def patient_dash_view(request):
-
-    return render(request, 'patient/patient-dash.html')
-
-def patient_doctor_view(request):
+    user = User.objects.get(username = request.user.username)
+    patient = Patient.objects.get(patient = user)
     
     context = {
-        'doctors': Health_Practitioner.objects.all(),
+        'patient': patient
+    }
+
+    return render(request, 'patient/patient-dash.html', context)
+
+def patient_doctor_view(request):
+    if request.method == "POST":
+        specialty_search = request.POST.get('specialty')
+        search = request.POST.get('search')
+
+        # to prevent none value being given if user does not enter anything in the field
+        if not search:
+            search = specialty_search
+        if not specialty_search:
+            specialty_search = search
+
+        doctors = Health_Practitioner.objects.filter(Q(health_practitioner__first_name__icontains=search) \
+                  | Q(health_practitioner__last_name__icontains=search) | Q(clinics__name__icontains=search) \
+                  | Q(specialty__in=(specialty_search, search)))
+        
+    else:
+        doctors = Health_Practitioner.objects.all()
+    
+    context = {
+        'doctors': doctors,
         
     }
     return render(request, 'patient/patient-doctor.html', context)
 
+def patient_profile_view(request):
+    user = User.objects.get(username = request.user.username)
+    patient = Patient.objects.get(patient = user)
+    
+    if request.method == 'POST':
+        patient.D_O_B = request.POST.get('birthdate')
+        patient.sex = request.POST.get('gender')
+        patient.marital_status = request.POST.get('marital')
+        patient.save()
 
+
+    context = {
+        'patient': patient,
+        
+    }
+    return render(request, 'patient/patient-profile.html', context)
+    
 @login_required
 def DocProfile(request, id=None):
 
@@ -182,16 +222,7 @@ def CreateAppointment(request, id=None):
                'form': form,
               }    
     return render(request, 'patient/patient-appt.html', context)
-    
-    
-               
-
-
-def patient_profile_view(request):
-
-    return render(request, 'patient/patient-profile.html')
-
-
+        
 def patient_clinic_view(request):
     if request.method == "POST":
         search = request.POST.get('search')
@@ -199,35 +230,31 @@ def patient_clinic_view(request):
             query = Clinic.objects.filter(name__icontains=search)
         elif request.POST.get('clinic-pharmacy') == 'pharmacies':
             query = Pharmacy.objects.filter(name__icontains=search)
+        category = request.POST.get('clinic-pharmacy')
     else:
-        query = Clinic.objects.all()
-
-    location = request.POST.get('clinic-pharmacy')
+        query = Pharmacy.objects.all()
+        category = 'pharmacies'
     
     context = {
 
         'query': query,
-        'location': location,
+        'category': category,
 
     }
     
     return render(request, 'patient/patient-clinic.html', context)
 
-
-def clinic_info_view(request, location, pk):
-    if location == 'clinics':
-        place = get_object_or_404(Clinic, id=pk)
-    elif location == 'pharmacies':
-        place = get_object_or_404(Pharmacy, id=pk)
+def clinic_info_view(request, category, pk):
+    
+    if category == 'pharmacies':
+        location = get_object_or_404(Pharmacy, id=pk)
     else:
-        place = get_object_or_404(Clinic, id=pk)
+        location = get_object_or_404(Clinic, id=pk)
 
     context = {
 
-        'place': place,
-        
-        
-
+        'location': location,
+   
      }
 
     return render(request, 'patient/patient-clinic-info.html', context)
