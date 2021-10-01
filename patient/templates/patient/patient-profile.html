@@ -79,7 +79,8 @@
                             </div>
                             <div>
                                 <label for="age">Age</label><br>
-                                <input id="age" type="number" name="age" value = {{ patient.age }}>
+                                <p id="age" class="patient-age">{{ patient.age }}</p>
+                                {% comment %} <input id="age" class="patient-age" type="number" name="age" value = {{ patient.age }}> {% endcomment %}
                             </div>
                             <div>
                             <label for="ethnicity">Race/Ethnicity</label><br>
