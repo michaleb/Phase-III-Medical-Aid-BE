@@ -67,7 +67,8 @@
                 <h1>Welcome to your dashboard, {{ patient.patient.first_name }}</h1>
                 <p>Your last appointment was on <b>6/28/21</b> at <b>8:00am</b> with <b>Dr. Bostick</b></p>
                 <p>You have <b>NO</b> upcoming appointments scheduled</p>
-                <button class="schedule-btn">Make an Appointment</button>
+                <button class="schedule-btn"><a href="{% url 'patient-doctor' %}">
+                Make an Appointment</a></button>
             </div>
             <img src="{% static 'patient/images/patient-images/patient-icon.png' %}" alt="profile-image" class="userPic" />
         </section>

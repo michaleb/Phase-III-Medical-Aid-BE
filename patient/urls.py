@@ -8,6 +8,8 @@ from .views import (
     patient_profile_view,
     patient_clinic_view,
     clinic_info_view,
+    DocProfile,
+    CreateAppointment,
 )
 
 urlpatterns = [
@@ -18,5 +20,7 @@ urlpatterns = [
     path('patient-profile/', patient_profile_view, name = "patient-profile"),
     path('patient-clinic/', patient_clinic_view, name = "patient-clinic"),
     path('clinic-info/<str:category>/<int:pk>/', clinic_info_view, name = "clinic-info"),
-        
+    path('patient-appt/<int:id>', CreateAppointment, name='patient-appt'), #
+    path('patient-doctor-profile/<int:id>', DocProfile, name='patient-doctor-profile'),        
+
 ]

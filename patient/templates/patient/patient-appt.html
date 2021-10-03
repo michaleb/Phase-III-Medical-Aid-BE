@@ -1,213 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static%}    
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Patient - Century Health</title>
-    <link rel="shortcut icon" href="/images/admin-dash/favicon.svg">
+    <link rel="shortcut icon" href="{% static 'aidApp/images/admin-dash/favicon.svg' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="patient-appt.css">
-    <script src="patient-dash.js" defer></script>
+    <link rel="stylesheet" href="{% static 'patient/css/patient-appt.css' %}">
+    <script src="{% static 'patient/js/patient-dash.js' %}" defer></script>
+
+    <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script-->
+    <!--link href="{% static 'aidApp/css/bootstrap.css' %}" rel="stylesheet" type="text/css"/-->
+    <!--script src="{% static 'aidApp/js/bootstrap.js' %}"></script-->
+
+    <!--link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="//cdn.bootcss.com/bootstrap-datetimepicker/4.17.44/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="//cdn.bootcss.com/moment.js/2.17.1/moment.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap-datetimepicker/4.17.44/js/bootstrap-datetimepicker.min.js"></script>
+
+       
+
 </head>
 
 <body>
     <div class="wrapper">
         <!--Header-->
-        <header><a href="#"><img src="../images/patient-images/logo.svg" class="logo"></a>
-            <button class="hamburger" id="hamburger"><img src="../images/admin-dash/fi_menu.svg"></button>
+        <header><a href="#"><img src="{% static 'patient/images/patient-images/logo.svg' %}" class="logo"></a>
+            <button class="hamburger" id="hamburger"><img src="{% static 'aidApp/images/admin-dash/fi_menu.svg' %}"></button>
         </header>
         <!--Navigation-->
         <nav>
             <ul class="nav-ul" id="nav-ul">
                 <li>
-                    <a href="patient-dash.html">
-                        <img src="../images/patient-images/dash-icon.svg" alt="dashboard icon">
+                    <a href="{% url 'patient-dash' %}">
+                        <img src="{% static 'patient/images/patient-images/dash-icon.svg' %}" alt="dashboard icon">
                         Dashboard</a>
                 </li>
                 <li>
-                    <a href="patient-profile.html">
-                        <img src="../images/patient-images/profile-icon.svg" alt="profile icon">
+                    <a href="{% url 'patient-profile' %}">
+                        <img src="{% static 'patient/images/patient-images/profile-icon.svg' %}" alt="profile icon">
                         Profile</a>
                 </li>
                 <li>
-                    <a href="patient-doctor.html" class="active-link">
-                        <img src="../images/patient-doctor-img/doctor-icon-yellow.svg" alt="doctor icon">
+                    <a href="{% url 'patient-doctor' %}" class="active-link">
+                        <img src="{% static 'patient/images/patient-doctor-img/doctor-icon-yellow.svg' %}" alt="doctor icon">
                         Talk to a Doctor</a>
                 </li>
                 <li>
-                    <a href="patient-clinic.html">
-                        <img src="../images/patient-images/clinic-icon.svg" alt="clinics icon">
+                    <a href="{% url 'patient-clinic' %}">
+                        <img src="{% static 'patient/images/patient-images/clinic-icon.svg' %}" alt="clinics icon">
                         Pharmacies and Clinics</a>
                 </li>
 
                 <li>
-                    <a href="patient-support.html" >
-                        <img src="../images/patient-images/contact-icon.svg" alt="contact icon">
+                    <a href="{% url 'support' %}" >
+                        <img src="{% static 'patient/images/patient-images/contact-icon.svg' %}" alt="contact icon">
                         Contact Us / Support</a>
                 </li>
                 <li>
-                    <a href="../index.html">
-                        <img src="../images/patient-images/logout.svg" alt="logout icon" />
+                    <a href="{% url 'users:logout' %}">
+                        <img src="{% static 'patient/images/patient-images/logout.svg' %}" alt="logout icon" />
                         Logout</a>
                 </li>
             </ul>
         </nav>
         <main>
-            <a class="back" href="patient-doctor.html">< Back</a>
+            <a class="back" href="{% url 'patient-doctor' %}">< Back</a>
             <section class="dr-section bubble-style">
-                <img src="../images/patient-doctor-profile-img/drcrusher.svg" alt="Dr Crusher">
+                <img src="{% static 'patient/images/patient-doctor-profile-img/drcrusher.svg' %}" alt="Dr Crusher">
 
                 <div class="dr-info">
-                    <h1>Dr. Beverly Crusher, MD</h1>
+                    <h1>Dr. {{gform.health_practitioner}}, MD</h1><!--Beverly Crusher-->
                     <div class="dr-info-details">
                     <div class="dr-info-group">
                         <p class="dr-info-title">Specialty</p>
-                        <p class="dr-info-detail"><b>Internal Medicine and Pediatrics</b></p>
+                        <p class="dr-info-detail"><b>{{gform.specialty}}</b></p><!--Internal Medicine and Pediatrics-->
 
                         <p class="dr-info-title">Location</p>
-                        <p class="dr-info-detail"><b>Cleveland General Hospital</b></p>
+                        <p class="dr-info-detail"><b>{{gform.clinics.0}}</b></p><!--Cleveland General Hospital-->
 
                         <p class="dr-info-title">Insurance Accepted</p>
-                        <p class="dr-info-detail"><b>Blue Cross, Cigna, and Shield</b></p>
+                        <p class="dr-info-detail"><b>{{gform.insurance_accepted}}</b></p><!--Blue Cross, Cigna, and Shield-->
                     </div>
                     <div class="dr-info-group">
                     <p class="dr-info-title">Languages</p>
-                    <p class="dr-info-detail"><b>English and Spanish</b></p>
+                    <p class="dr-info-detail"><b>{{gform.languages}}</b></p><!--English and Spanish-->
 
                     <p class="dr-info-title">Accepting New Patients</p>
-                    <p class="dr-info-detail"><b>Yes</b></p>
+                    <p class="dr-info-detail"><b>{{gform.accepting_new_patients}}</b></p><!--Yes-->
                     </div>
                     </div>
                 </div>
                 <div class="rating-review-info">
                     <h1 class="rating">4.6</h1>
                     <div class="star-rating">
-                        <img src="../images/patient-doctor-profile-img/star.svg">
-                        <img src="../images/patient-doctor-profile-img/star.svg">
-                        <img src="../images/patient-doctor-profile-img/star.svg">
-                        <img src="../images/patient-doctor-profile-img/star.svg">
-                        <img src="../images/patient-doctor-profile-img/star.svg">
+                        <img src="{% static 'patient/images/patient-doctor-profile-img/star.svg' %}">
+                        <img src="{% static 'patient/images/patient-doctor-profile-img/star.svg' %}">
+                        <img src="{% static 'patient/images/patient-doctor-profile-img/star.svg' %}">
+                        <img src="{% static 'patient/images/patient-doctor-profile-img/star.svg' %}">
+                        <img src="{% static 'patient/images/patient-doctor-profile-img/star.svg' %}">
                     </div>
-                    <div class="review">
+                        <div class="review">
                         <p><b>34 </b>Reviews</p>
                         <p><b>30 </b>Patient Comments</p>
+                       
                     </div>
                     
                 </div>
+                
             </section>
-            <section class="appointment">
-                <div class="date">
-                    <h2 class="heading">Available Dates</h2>
-                    <div class="calendar border-style">
-<!--                        Calender code adapted from  https://codepen.io/Markshall/pen/ExPxpYX-->
-                        <div class="calendar__opts">
-                            <select name="calendar__month" id="calendar__month">
-                                <option>January</option>
-                                <option>February</option>
-                                <option>March</option>
-                                <option selected>April</option>
-                                <option>May</option>
-                                <option>June</option>
-                                <option>July</option>
-                                <option>August</option>
-                                <option>September</option>
-                                <option>October</option>
-                                <option>November</option>
-                                <option>Decenber</option>
-                            </select>
+            {% if messages %} 
+            <ul class="message">
+                {% for message in messages %} 
+                <li{% ifequal message.tags error %}></li> 
+                <div class="alert alert-error">{{message}}</div> 
+                {% else %} 
+                <div class="alert alert-success">{{message}}</div>
+                {% endifequal %}> 
+                {% endfor %}
+            
+            </ul>
+               
+            {% else %}
+            <form action="" method="POST">
+                {% csrf_token %}
+                                           
+                <section class="appointment">
 
-                            <select name="calendar__year" id="calendar__year">
-                                <option selected>2021</option>
-                                <option>2022</option>
-                                <option>2023</option>
-                                <option>2024</option>
-                            </select>
-                        </div>
-
-                        <div class="calendar__body">
-                            <div class="calendar__days">
-                                <div>Mo</div>
-                                <div>Tu</div>
-                                <div>We</div>
-                                <div>Th</div>
-                                <div>Fr</div>
-                                <div>Sa</div>
-                                <div>Su</div>
+                    <div class="date">
+                        <h3 class="heading">Available Dates</h3>
+                        <div class="calendar border-style">
+                            <div class="calendar__opts">
+                                {{form.appointment_date}}
+                                <script>
+                                    $(function() {
+                                      $('.date-input' ).datetimepicker({
+                                        format:'YYYY-MM-DD',
+                                        daysOfWeekDisabled: [0],
+                                        //startDate:'0d',
+                                        //yearRange:'2021:2024',
+                                                                          
+                                      });
+                                    });
+                                </script>
                             </div>
-
-                            <div class="calendar__dates">
-                                <div class="calendar__date calendar__date--grey"><span>27</span></div>
-                                <div class="calendar__date calendar__date--grey"><span>28</span></div>
-                                <div class="calendar__date calendar__date--grey"><span>29</span></div>
-                                <div class="calendar__date calendar__date--grey"><span>30</span></div>
-                                <div class="calendar__date"><span>1</span></div>
-                                <div class="calendar__date"><span>2</span></div>
-                                <div class="calendar__date"><span>3</span></div>
-                                <div class="calendar__date"><span>4</span></div>
-                                <div class="calendar__date"><span>5</span></div>
-                                <div class="calendar__date"><span>6</span></div>
-                                <div class="calendar__date"><span>7</span></div>
-                                <div class="calendar__date"><span>8</span></div>
-                                <div class="calendar__date"><span>9</span></div>
-                                <div class="calendar__date"><span>10</span></div>
-                                <div class="calendar__date"><span>11</span></div>
-                                <div class="calendar__date"><span>12</span></div>
-                                <div class="calendar__date"><span>13</span></div>
-                                <div class="calendar__date"><span>14</span></div>
-                                <div class="calendar__date"><span>15</span></div>
-                                <div class="calendar__date"><span>16</span></div>
-                                <div class="calendar__date"><span>17</span></div>
-                                <div class="calendar__date"><span>18</span></div>
-                                <div class="calendar__date"><span>19</span></div>
-                                <div class="calendar__date"><span>20</span></div>
-                                <div class="calendar__date"><span>21</span></div>
-                                <div class="calendar__date"><span>22</span></div>
-                                <div class="calendar__date"><span>23</span></div>
-                                <div class="calendar__date"><span>24</span></div>
-                                <div class="calendar__date"><span>25</span></div>
-                                <div class="calendar__date"><span>26</span></div>
-                                <div class="calendar__date available-date"><span>27</span></div>
-                                <div class="calendar__date available-date"><span>28</span></div>
-                                <div class="calendar__date available-date"><span>29</span></div>
-                                <div class="calendar__date"><span>30</span></div>
-                                <div class="calendar__date"><span>31</span></div>
-                            </div>
+                            <p style = "color: var(--primaryColor);", style = "text-align:center">Please select current or future date.</p> 
+                            
                         </div>
                     </div>
-                </div>
-                <div class="time">
-                    <h2 class="heading">Available Time Slots</h2>
-                    <div class="available-times-wrapper border-style">
-                        <div class="available-times">
-                            <p>9:00 AM</p>
-                            <p>10:00 AM</p>
-                            <p class="available-time">11:00 AM</p>
-                            <p>12:00 PM</p>
-                            <p class="available-time">1:00 PM</p>
-                            <p class="available-time">2:00 PM</p>
+                    <div class="time">
+                        <h3 class="heading">Available Time Slots</h3>
+                        <div class="available-times-wrapper border-style">
+                            <select  size='12' name="timeslots" id="timeslots"> 
+                                <div class="available-times"> 
+                                    {% for timeslot in form.timeslots %} 
+                                        <option value="">{{timeslot}}
+                                    {% endfor %}
+                                        
+                                </div>                          
+                            </select>        
                         </div>
-                        <div class="available-times">
-                            <p class="available-time">3:00 PM</p>
-                            <p>4:00 PM</p>
-                            <p>5:00 PM</p>
-                        </div>
+                    </div>    
+                                    
+                    <div class="reason-wrapper">
+                        <h3 class="heading">Reason for Appointment</h3>
+                        <p>Max 200 Characters</p>
+                        <div class="reason">
+                        <!--textarea class="border-style" id="appt-reason" name="appt_reason" row=16></textarea-->
+                        <p><value=>{{form.appt_reason}}</p>  
+                        
+                        
+                        <!--button class="schedule-btn">Make an Appointment</button></div-->
+                        <input type="submit" class="schedule-btn" value="Make an Appointment" />
                     </div>
-                </div>
-                <div class="reason-wrapper">
-                    <h2 class="heading">Reason for Appointment</h2>
-                    <p>Max 200 Characters</p>
-                    <div class="reason">
-                    <textarea class="border-style" id="appt-reason" name="appt-reason" rows="16"></textarea>
-                    <button class="schedule-btn">Make an Appointment</button></div>
-                </div>
-
-            </section>
+                        
+                        
+                </section>
+            </form>
+            {% endif %}
+                
         </main>
     </div>
 </body>
 
 </html>
+
