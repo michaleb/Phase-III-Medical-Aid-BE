@@ -93,7 +93,7 @@ class Medical_History(models.Model):
 
 class Health_Practitioner(models.Model):
     
-    health_practitioner = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    health_practitioner = models.OneToOneField(User, null=False, on_delete=models.CASCADE)
     clinics = models.ForeignKey('Clinic', blank=True, null=True,on_delete=models.CASCADE)
     professional_title = models.CharField(default= "Dr. ", max_length=4)
     professional_suffix = models.CharField(default= " MD", max_length=4)
@@ -110,7 +110,7 @@ class Health_Practitioner(models.Model):
     appointments_approved = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.specialty()
+        return self.health_practitioner.get_full_name()
     
 
 class Feedback(models.Model):
