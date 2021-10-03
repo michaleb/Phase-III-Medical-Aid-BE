@@ -48,7 +48,7 @@ def doctor_search_view(request):
         patients = Patient.objects.filter(Q(patient__first_name__icontains=search) | Q(patient__last_name__icontains=search))
     else:
         patients = Patient.objects.all()
-    print()
+    
     context = {
         'patients': patients,
         

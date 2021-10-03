@@ -79,8 +79,8 @@
                             </div>
                             <div>
                                 <label for="age">Age</label><br>
-                                <p id="age" class="patient-age">{{ patient.age }}</p>
-                                {% comment %} <input id="age" class="patient-age" type="number" name="age" value = {{ patient.age }}> {% endcomment %}
+                                {% comment %} <p id="age" name="age">{{ patient.age }}</p> {% endcomment %}
+                                <input id="age" name="age" value = {{ patient.age }}>
                             </div>
                             <div>
                             <label for="ethnicity">Race/Ethnicity</label><br>
@@ -111,17 +111,17 @@
                     </div>
                     <div class="contact-info">
                         <label for="address1">Address 1</label><br>
-                        <input id="address1" type="text" name="address1"><br>
+                        <input id="address1" type="text" name="address1" value={{ contacts.address_1 }}><br>
                         <label for="address2">Address 2</label><br>
-                        <input id="address2" type="text" name="address2"><br>
+                        <input id="address2" type="text" name="address2" value={{ contacts.address_2 }}><br>
                         <label for="city">City</label><br>
-                        <input id="city" type="text" name="city"><br>
+                        <input id="city" type="text" name="city" value={{ contacts.city }}><br>
                         <label for="state">State</label><br>
-                        <input id="state" type="text" name="state"><br>
+                        <input id="state" type="text" name="state" value={{ contacts.state }}><br>
                         <label for="zipcode">Zip Code</label><br>
-                        <input id="zipcode" type="number" name="zipcode"><br>
+                        <input id="zipcode" type="number" name="zipcode" value={{ contacts.zip_code }}><br>
                         <label for="phone">Phone Number</label><br>
-                        <input id="phone" type="number" name="phone"><br>
+                        <input id="phone" type="number" name="phone" value={{ patient.telephone }}><br>
                         <label for="email">Email</label><br>
                         <input id="email" type="email" name="email"><br>
                     </div>
@@ -133,21 +133,21 @@
                     </div>
                     <div class="emergency-contact">
                         <label for="contactname">Name</label><br>
-                        <input id="contactname" type="text" name="contactname"><br>
+                        <input id="contactname" type="text" name="emcontactname" value={{ contacts.ec_name }}><br>
                         <label for="contactaddress1">Address 1</label><br>
-                        <input id="contactaddress1" type="text" name="address1"><br>
+                        <input id="contactaddress1" type="text" name="emaddress1" value={{ contacts.ec_address_1 }}><br>
                         <label for="contactaddress2">Address 2</label><br>
-                        <input id="contactaddress2" type="text" name="address2"><br>
+                        <input id="contactaddress2" type="text" name="emaddress2" value={{ contacts.ec_address_2 }}><br>
                         <label for="contactcity">City</label><br>
-                        <input id="contactcity" type="text" name="city"><br>
+                        <input id="contactcity" type="text" name="emcity" value={{ contacts.ec_city }}><br>
                         <label for="contactstate">State</label><br>
-                        <input id="contactstate" type="text" name="state"><br>
+                        <input id="contactstate" type="text" name="emstate" value={{ contacts.ec_state }}><br>
                         <label for="contactzipcode">Zip Code</label><br>
-                        <input id="contactzipcode" type="number" name="zipcode"><br>
+                        <input id="contactzipcode" type="number" name="emzipcode" value={{ contacts.ec_zip_code }}><br>
                         <label for="contactphone">Phone Number</label><br>
-                        <input id="contactphone" type="number" name="phone"><br>
+                        <input id="contactphone" type="number" name="emphone" value={{ contacts.ec_phone_number }}><br>
                         <label for="contactemail">Email</label><br>
-                        <input id="contactemail" type="email" name="email">
+                        <input id="contactemail" type="email" name="ememail">
                     </div>
 
                 </section>
