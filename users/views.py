@@ -101,14 +101,27 @@ def login_view(request):
         user = authenticate(request, username=username,password=password)
         # Verify user is valid
         if user is not None:
-            patient = Patient.objects.filter(patient=user)
+            try:
+                assert Patient.objects.filter(patient=user)
             
-            if patient is not None:
-                login(request, user)
-                return redirect('patient-dash')
-            else:
+            except: 
                 login(request, user)
                 return redirect('doctor-dash')
+
+            else:
+                login(request, user)
+                return redirect('patient-dash')
+
+    
+        # if user is not None:
+        #     patient = Patient.objects.filter(patient=user)
+            
+        #     if patient is not None:
+        #         login(request, user)
+        #         return redirect('patient-dash')
+        #     else:
+        #         login(request, user)
+        #         return redirect('doctor-dash')
         
         else:
             context["error"] = "Please provide valid credentials."
