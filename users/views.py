@@ -1,4 +1,4 @@
-from aidApp.models import Health_Practitioner, Patient
+from aidApp.models import Health_Practitioner, Patient, Patient_Contact_Info
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
@@ -41,6 +41,9 @@ def patient_signup(request):
                 user.save()
                 patient = Patient.objects.create(patient=user)
                 patient.save()
+                new_patient = Patient.objects.get(patient=user)
+                Patient_Contact_Info.objects.create(patient=new_patient)
+                
                 messages.info(request,'Please note that the user is created.')
                 # Login user after signing up
                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
