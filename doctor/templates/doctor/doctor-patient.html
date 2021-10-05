@@ -75,25 +75,25 @@
             <div class="patient bubble-style">
                 <div class="col1">
                     <img src="{% static 'doctor/images/doctor-dash/patient-icon.png' %}">
-                    <p><b>Michael Bostick</b></p>
+                    <p><b>{{patient.patient.first_name}} {{patient.patient.last_name}}</b></p>
                 </div>
                 <div class="col2">
                     <p><b>Date of Birth</b></p>
-                    <p>2/22/83</p>
+                    <p>{{patient.D_O_B}}</p>
                     <p><b>Sex</b></p>
-                    <p>Male</p>
+                    <p>{{patient.sex}}</p>
                 </div>
                 <div class="col3">
                     <p><b>Age</b></p>
-                    <p>35</p>
+                    <p>{{patient.age}}</p>
                     <p><b>Status</b></p>
-                    <p>Single</p>
+                    <p>{{patient.marital_status}}</p>
                 </div>
                 <div class="col4">
-                    <p><b>Ethnicity</b></p>
-                    <p>African American</p>
-                    <p>Japanese</p>
-                    <p>Italian</p>
+                    <p><b>Telephone</b></p>
+                    <p>{{patient.telephone}}</p>
+                    <!-- <p>Japanese</p>
+                    <p>Italian</p> -->
                 </div>
             </div>
 

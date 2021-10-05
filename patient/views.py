@@ -1,11 +1,16 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.core.mail import send_mail
+from django.core.mail import send_mail, get_connection
 from django.db.models import Q
 import datetime
-from aidApp.models import Feedback, Patient, Health_Practitioner
+from django.utils.dateparse import parse_date
+from django.conf import settings
+from django.template.defaulttags import register
+from datetime import date, timedelta
+from aidApp.models import Feedback, Patient, Health_Practitioner, FAQ, Appointment, Clinic, Pharmacy, Patient_Contact_Info
+from .forms import DocProfileForm, AppCreateForm#, AppUpdateForm, AppRetrieveForm 
 
 # Create your views here.
 
@@ -50,13 +55,225 @@ def support_success_view(request):
 
 @login_required
 def patient_dash_view(request):
-
-    return render(request, 'patient/patient-dash.html')
-
-def patient_doctor_view(request):
+    user = User.objects.get(username = request.user.username)
+    patient = Patient.objects.get(patient = user)
     
     context = {
-        'doctors': Health_Practitioner.objects.all(),
+        'patient': patient
+    }
+
+    return render(request, 'patient/patient-dash.html', context)
+
+def patient_doctor_view(request):
+    if request.method == "POST":
+        specialty_search = request.POST.get('specialty')
+        search = request.POST.get('search')
+
+        # to prevent none value being given if user does not enter anything in the field
+        if not search:
+            search = specialty_search
+        if not specialty_search:
+            specialty_search = search
+
+        doctors = Health_Practitioner.objects.filter(Q(health_practitioner__first_name__icontains=search) \
+                  | Q(health_practitioner__last_name__icontains=search) | Q(clinics__name__icontains=search) \
+                  | Q(specialty__in=(specialty_search, search)))
+        
+    else:
+        doctors = Health_Practitioner.objects.all()
+    
+    context = {
+        'doctors': doctors,
         
     }
     return render(request, 'patient/patient-doctor.html', context)
+
+def patient_profile_view(request):
+    user = User.objects.get(username = request.user.username)
+    patient = Patient.objects.get(patient = user)
+    contacts = Patient_Contact_Info.objects.get(patient = patient)
+    
+    if request.method == 'POST':
+        patient.D_O_B = request.POST.get('birthdate')
+        patient.sex = request.POST.get('gender')
+        patient.marital_status = request.POST.get('marital')
+        patient.telephone = request.POST.get('phone')
+        patient.save()
+        contacts.address_1 = request.POST.get('address1')
+        contacts.address_2 = request.POST.get('address2')
+        contacts.city = request.POST.get('city')
+        contacts.state = request.POST.get('state')
+        contacts.zip_code = request.POST.get('zipcode')
+        contacts.ec_name = request.POST.get('emcontactname')
+        contacts.ec_address_1 = request.POST.get('emaddress1')
+        contacts.ec_address_2 = request.POST.get('emaddress2')
+        contacts.ec_city = request.POST.get('emcity')
+        contacts.ec_state = request.POST.get('emstate')
+        contacts.ec_zip_code = request.POST.get('emzipcode')
+        contacts.ec_phone_numer = request.POST.get('emphone')
+        # contacts.ec_email = request.POST.get('emcontactname')
+        contacts.save()
+        return redirect('patient-profile')
+
+
+
+    context = {
+        'patient': patient,
+        'contacts': contacts,
+        
+    }
+    return render(request, 'patient/patient-profile.html', context)
+    
+@login_required
+def DocProfile(request, id=None):
+
+    #user = User.objects.get(id = id)
+    hp = Health_Practitioner.objects.get(health_practitioner_id=id)
+    cl = Clinic.objects.filter(health_practitioner=hp)
+    form = DocProfileForm()
+    
+    form = {'health_practitioner' : hp,
+            'professional_title' : hp.professional_title,
+            'professional_suffix': hp.professional_suffix,
+            'telephone' : hp.telephone,
+            'specialty' : hp.specialty,
+            'consultation_times' : hp.consultation_times,
+            'clinics' : cl,
+            'insurance_accepted' : hp.insurance_accepted,
+            'languages' : hp.languages,
+            'accepting_new_patients' : hp.accepting_new_patients,
+            'reviews': hp.reviews,
+            'rating_reviews': hp.rating_reviews,
+            'patient_comments': hp.patient_comments,
+            }
+        
+    return render(request, 'patient/patient-doctor-profile.html', {'form': form})
+
+
+@login_required
+def CreateAppointment(request, id=None):
+    
+    hp = Health_Practitioner.objects.get(health_practitioner_id=id)
+    hp_email = User.objects.get(health_practitioner=hp).email
+    cl = Clinic.objects.filter(health_practitioner=hp)
+    user = User.objects.get(id=request.user.id) #id=2 for testing or id=request.user.id)
+    patient = Patient.objects.get(patient=user)
+   
+    hp_appointments = list(Appointment.objects.filter(health_practitioner=hp).values())
+        
+    context = {}
+    gform = {'health_practitioner' : hp,
+            'professional_title' : hp.professional_title,
+            'professional_suffix': hp.professional_suffix,
+            #'telephone' : hp.telephone,
+            'specialty' : hp.specialty,
+            #'consultation_times' : hp.consultation_times,
+            'clinics' : cl,
+            'insurance_accepted' : hp.insurance_accepted,
+            'languages' : hp.languages,
+            'accepting_new_patients' : hp.accepting_new_patients,
+            'reviews': hp.reviews,
+            'rating_reviews': hp.rating_reviews,
+            'patient_comments': hp.patient_comments,
+            }
+    
+    if request.method == 'POST':
+        
+        form = AppCreateForm(request.POST)
+        free_timeslot = True
+        
+        # check if form data is valid
+        if form.is_valid():
+
+            for appointment in hp_appointments:
+                if appointment['appointment_date'] == form.cleaned_data['appointment_date']:
+                    if appointment['timeslots'] == form.cleaned_data['timeslots']:
+                        free_timeslot = False
+                            
+            app_date = form.cleaned_data['appointment_date']
+            timeslot= form.cleaned_data['timeslots']
+            app_reason = form.cleaned_data['appt_reason']
+            
+            # check if date is valid and timeslot unbooked
+            if free_timeslot and app_date > date.today()- timedelta(days=1): 
+
+                appointment = Appointment.objects.create(health_practitioner=hp,
+                                                        patient=patient, 
+                                                        appointment_date= app_date,
+                                                        timeslots = timeslot, 
+                                                        appt_reason=app_reason,
+                                                        app_status="PENDING")
+                appointment.save()
+                hp.appointments_pending = hp.appointments_pending +1
+                hp.save()
+
+                appointment_email = app_reason+" "+ str(app_date) 
+                            
+                con = get_connection('django.core.mail.backends.console.EmailBackend')
+                send_mail('Appointment request',
+                        appointment_email,
+                        None,
+                        [hp_email],
+                        connection=con            
+                )
+                            
+                messages.success(request, "Your appointment request was submitted successfully! Thank you.")
+                
+            else:
+                messages.error(request, "Your chosen appointment date and/or time is unavailable. Please go back and choose  other date / time.")
+                
+            
+        else:
+            context = {'gform': gform,
+                       'form': form,
+                      }    
+            return render(request,'patient/patient-appt.html',context)        
+
+
+    form = AppCreateForm(request.GET)
+        
+    form = {'appt_reason': form['appt_reason'],
+            'timeslots': form['timeslots'],
+            'appointment_date': form['appointment_date'],
+            }
+            
+    context = {'gform': gform,
+               'form': form,
+              }    
+    return render(request, 'patient/patient-appt.html', context)
+        
+def patient_clinic_view(request):
+    if request.method == "POST":
+        search = request.POST.get('search')
+        if request.POST.get('clinic-pharmacy') == 'clinics':
+            query = Clinic.objects.filter(name__icontains=search)
+        elif request.POST.get('clinic-pharmacy') == 'pharmacies':
+            query = Pharmacy.objects.filter(name__icontains=search)
+        category = request.POST.get('clinic-pharmacy')
+    else:
+        query = Pharmacy.objects.all()
+        category = 'pharmacies'
+    
+    context = {
+
+        'query': query,
+        'category': category,
+
+    }
+    
+    return render(request, 'patient/patient-clinic.html', context)
+
+def clinic_info_view(request, category, pk):
+    
+    if category == 'pharmacies':
+        location = get_object_or_404(Pharmacy, id=pk)
+    else:
+        location = get_object_or_404(Clinic, id=pk)
+
+    context = {
+
+        'location': location,
+   
+     }
+
+    return render(request, 'patient/patient-clinic-info.html', context)

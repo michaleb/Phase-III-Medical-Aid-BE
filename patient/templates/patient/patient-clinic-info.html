@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static  %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient - Century Health</title>
+    <link rel="shortcut icon" href="{% static 'patient/images/patient-images/favicon.svg' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'patient/css/patient-clinic-info.css' %}">
+    <script src="{% static 'patient/js/patient-dash.js' %}" defer></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <!--Header-->
+        <header><a href="{% url 'homepage' %}"><img src="{% static 'patient/images/patient-images/logo.svg' %}" class="logo"></a>
+            <button class="hamburger" id="hamburger"><img src="{% static 'patient/images/logo/fi_menu.svg' %}"></button>
+        </header>
+        <!--Navigation-->
+        <nav>
+            <ul class="nav-ul" id="nav-ul">
+                <li>
+                    <a href="{% url 'patient-dash' %}">
+                        <img src="{% static 'patient/images/patient-profile-img/dashboard-white.svg' %}" alt="dashboard icon">
+                        Dashboard</a>
+                </li>
+                <li>
+                    <a href="{% url 'patient-profile' %}">
+                        <img src="{% static 'patient/images/patient-images/profile-icon.svg' %}" alt="profile icon">
+                        Profile</a>
+                </li>
+                <li>
+                    <a href="{% url 'patient-doctor' %}" >
+                        <img src="{% static 'patient/images/patient-images/doctor-icon.svg' %}" alt="doctor icon">
+                        Talk to a Doctor</a>
+                </li>
+                <li>
+                    <a href="{% url 'patient-clinic' %}" class="active-link">
+                        <img src="{% static 'patient/images/patient-clinic-img/clinic-icon-yellow.svg' %}" alt="clinics icon">
+                        Pharmacies and Clinics</a>
+                </li>
+
+                <li>
+                    <a href="{% url 'support' %}">
+                        <img src="{% static 'patient/images/patient-images/contact-icon.svg' %}" alt="contact icon">
+                        Contact Us / Support</a>
+                </li>
+                <li>
+                    <a href="{% url 'users:logout' %}">
+                        <img src="{% static 'patient/images/patient-images/logout.svg' %}" alt="logout icon" />
+                        Logout</a>
+                </li>
+            </ul>
+        </nav>
+        <main>
+            <a class="back" href="{% url 'patient-clinic' %}">< Back</a>
+            <h1 class="main-heading">Pharmacy and Clinic Information</h1>
+            <div class="pharmacy-info">
+                <section class="location-info bubble-style">
+                    <img src="{% static 'patient/images/patient-clinic-info-img/pharmacy.svg' %}">
+                    <div class="location-details">
+                        <div class="address">
+                            <p><b>{{ location.name }}</b></p>
+                            <p>{{ location.address}}<br>
+                                
+                                <br>
+                                {{ location.telephone }}
+                            </p>
+                        </div>
+                        <a href="https://www.google.com/maps">
+                        <button class="directions-btn">Get Directions</button>
+                        </a>
+                    </div>
+                </section>
+                <section class="other-details">
+                    <div>
+                        <div class="hours">
+                            <p><b>Pharmacy or Clinic Hours</b></p>
+                            <p>{{ location.hours }} <br>
+                                {% comment %} Saturday: 9am to 2pm<br>
+                                Sundays: 10am to 1pm {% endcomment %}
+                            </p>
+                        </div>
+                        <div class="holiday-hours">
+                            <p><b>Major Holidays</b></p>
+                            <p>Generally 10am to 2pm.<br>
+                                Check with us for holiday schedules.
+                            </p>
+                        </div>
+                        <div class="closed">
+                            <p><b>Closed</b></p>
+                            <p>Thanksgiving, Christmas and Easter Sunday.<br>
+                                Check with us for holiday schedules.
+                            </p>
+                        </div>
+                    </div>
+                    <img src="{% static 'patient/images/patient-clinic-info-img/pharmacy-map.svg' %}" alt="pharmacy map">
+                </section>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

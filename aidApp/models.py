@@ -6,6 +6,7 @@ from django.db.models.deletion import CASCADE, SET, SET_NULL
 from django.db.models.fields.related import ForeignKey, OneToOneField
 from django.forms import widgets
 import datetime
+from django.utils.dateparse import parse_date
 from phone_field import PhoneField
 
 class FAQ(models.Model):
@@ -37,7 +38,8 @@ class Patient(models.Model):
     
     patient = models.OneToOneField(User, on_delete=models.CASCADE)
     telephone = PhoneField(blank=True, help_text='Patient phone number')
-    D_O_B = models.DateField(default=tz.now)
+    # D_O_B = models.DateField(default=tz.now)
+    D_O_B = models.CharField(max_length=20)
     # age = models.CharField(max_length=5)
     registration_date = models.DateTimeField(auto_now_add=True)
     sex = models.CharField(max_length=20)
@@ -45,13 +47,31 @@ class Patient(models.Model):
     # medical_history = models.TextField(blank=True, null=True)
     @property
     def age(self):
-        return tz.now().year - self.D_O_B.year
+        return tz.now().year - parse_date(self.D_O_B).year
     
     def __str__(self):
         return self.patient.get_full_name() 
 
 
-'''class Medical_History(models.Model):
+class Patient_Contact_Info(models.Model):
+    
+    patient = models.ForeignKey('Patient', null=True, on_delete=models.CASCADE)
+    address_1 = models.TextField(blank=True, null=True)
+    address_2 = models.TextField(blank=True, null=True)
+    city = models.TextField(blank=True, null=True)
+    state = models.TextField(blank=True, null=True)
+    zip_code = models.TextField(blank=True, null=True)
+    ec_name = models.TextField(blank=True, null=True) # ec - Emergency Contact
+    ec_phone_number = models.TextField(blank=True, null=True)
+    ec_address_1 = models.TextField(blank=True, null=True)
+    ec_address_2 = models.TextField(blank=True, null=True)
+    ec_city = models.TextField(blank=True, null=True)
+    ec_state = models.TextField(blank=True, null=True)
+    ec_zip_code = models.TextField(blank=True, null=True)
+
+
+
+class Medical_History(models.Model):
 
     #permissions = (('can_edit_medical_history', 'Can update medical history'),)
     
@@ -69,19 +89,18 @@ class Patient(models.Model):
     prescriptions = models.TextField(blank=True, null=True)
     test_results = models.TextField(blank=True, null=True)
     health_practitioner_comments = models.TextField(blank=True, null=True)
-'''
+
 
 class Health_Practitioner(models.Model):
-
-    health_practitioner = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    
+    health_practitioner = models.OneToOneField(User, null=False, on_delete=models.CASCADE)
     clinics = models.ForeignKey('Clinic', blank=True, null=True,on_delete=models.CASCADE)
     professional_title = models.CharField(default= "Dr. ", max_length=4)
     professional_suffix = models.CharField(default= " MD", max_length=4)
-    #image = models.ImageField(null=True, blank=True)  
     telephone = models.CharField(max_length=20)
     specialty = models.TextField(max_length=200)
     consultation_times = models.TextField(default="Monday - 10:00am to 11:00am", max_length=600)
-    insurance_accepted = models.CharField(default='Blue Cross', max_length=200)
+    insurance_accepted = models.CharField(default='Blue Cross', max_length=500)
     languages = models.CharField(default='English', max_length=60)
     accepting_new_patients = models.CharField(default='Yes', max_length=3)
     reviews = models.IntegerField(default=29)
@@ -142,9 +161,6 @@ class Clinic(models.Model):
 
 class Appointment(models.Model):
 
-    DAYS = [(day, day) for day in range(1, 32)]
-    MONTHS = [(month, month) for month in range(1, 13)]
-    YEARS = [(year, year) for year in [2021, 2022, 2023, 2024]]
     TIMESLOTS = [(0, '9:00 AM'),
                 (1, '10:00 AM'),
                 (2, '11:00 AM'),
@@ -158,24 +174,16 @@ class Appointment(models.Model):
     
     health_practitioner = models.ForeignKey(Health_Practitioner, null=True, on_delete=models.CASCADE) 
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    app_date_day = models.IntegerField(choices=DAYS, default=1)
-    app_date_month = models.IntegerField(choices=MONTHS, default=1)
-    app_date_year = models.IntegerField(choices=YEARS, default=2021)
+    appointment_date = models.DateField(default=tz.now)
     timeslots = models.IntegerField(choices=TIMESLOTS, default=0)
     appt_reason = TextField(default= 'Annual Physical Examination', max_length=200)
     app_status = models.CharField(blank=True, max_length=10)
   
     def __str__(self):
-        return "Patient {} Date {} Time {} for {}".format(self.patient, self.app_date, self.time, self.health_practitioner)
+        return "{} ,{} ,{} ,{} ,{}".format(self.patient, self.appointment_date, self.time, self.health_practitioner, self.app_status)
     
     @property
     def time(self):
         return self.TIMESLOTS[self.timeslots][1]
 
-    @property
-    def app_date(self): 
-        y = self.YEARS[self.app_date_year][1]
-        m = self.MONTHS[self.app_date_month][1]
-        d = self.DAYS[self.app_date_day][1]
-        
-        return '{}-{}-{}'.format(y, m, d) 
+     

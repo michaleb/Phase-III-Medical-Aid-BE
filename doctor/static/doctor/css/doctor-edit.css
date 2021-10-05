@@ -17,9 +17,6 @@ body {
     color: var(--primaryText);
     font-family: "Open Sans", sans-serif;
 }
-main {
-  grid-area: main;
-}
 button {
   cursor: pointer;
 }
@@ -53,7 +50,11 @@ p {
   grid-template-areas: 
       "header"
       "sidebar"
-      "main";
+      "profile"
+      "contact"
+      "new"
+      "input"
+      "update";
 }
 
 /************************************ Section Styling ************************************/
@@ -113,267 +114,151 @@ button.hamburger {
    display: flex;
 }
 
-/* Dr. Profile */
+/* Profile */
 
-main header{
-  font-size: 30px;  
-}
-.profile{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 1rem;
-  padding: 2rem;
-}
-
-.location {
-  display: flex;
-  flex-direction: column;
-  margin: 0 1rem 3rem 1rem;
-}
-
-.location-details {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-bottom: 30px;
-}
-
-.rating-review-info {
+.profile {
+  grid-area: profile;
+  /* justify-content: space-between; */
   text-align: center;
+  margin: 30px;       
 }
 
-.info-detail {
-  margin-bottom: 30px;
+.heading{
+  font-style: bold;
 }
 
-.rating {
-  font-size: 60px;
-  margin: 0;
+.userPic {
+width: 30%;
 }
 
-.location-address {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  
+.profile-container{
+  background-color:#DAE4FF ;
+  padding: 5px;
+}
+
+.contact {
+  /* display: none; */
+  text-align: center;
+  margin: 30px;
+  grid-area: contact;   
+}
+
+.heading {
+  text-align: center;
+  margin: 30px;  
+}
+
+.new-patients {
+  margin: 15px;
+}
+
+.new {
+grid-area: new;
+}
+
+/* Form */
+.container {
+/* padding: 1rem; */
+display: inline-block;
 }
 
 
+.info-input {
+  padding: 1rem;
+  grid-area: input;    
+}
+
+input {
+  margin: 15px 0;
+  width: 90%;
+  padding: 8px;
+  background-color:#C3C7D2 ;
+}
+
+select {
+  width:90% ;
+  margin: 15px 0;
+  padding: 8px;
+}
 
 .update {
-background: var(--secondaryColor);
-color: var(--primaryText);
-font-size: 13px;
-font-weight: 700;
-border: none;
-border-radius: 5px;
-/* padding:10px; */
-width: 10rem;
-height: 2rem;
-text-align: center;
-margin: 0 auto;
-}
-
-.update:hover {
-background-color: var(--background);
-border: 1px solid var(--primaryColor);
-color: var(--primaryColor);
-}
-
-button {
-cursor: pointer;
-}
-
-label {
+  background: var(--secondaryColor);
+  color: var(--primaryText);
   font-size: 13px;
   font-weight: 700;
+  border: none;
+  border-radius: 5px;
+  padding:10px;
+  /* width: 243px; */
+  text-align: center;
+  margin: 0 auto;
+  grid-area: update;
 }
 
-/* input {
-   padding: 10px;
-   width: 385px;
-   background-color: var(--background);
-   border: 1px solid var(--tertiaryText);
-   border-radius: 4px;
-   margin-bottom: 15px;
-}
-
-input:focus,
-select:focus,
-input:hover,
-select:hover {
-    border: 1px solid var(--secondaryColor) !important;
-    box-shadow: 0 0 5px var(--secondaryColor);
-    outline-offset: 0;
-    outline: none;
-}
-
-.info-input input, .info-input select {
-    padding: 10px;
-    width: 350px;
-    background-color: #fff;
-    border: 1px solid var(--tertiaryText);
-    border-radius: 4px;
-    margin: 0 20px 20px 0;
-}
-
- */
-
-
-
-
-
-@media (max-width:900px) {
-  .info h1 {
-      font-size: 30px;
-  }
-  .info-details {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-  }
-
-  .info-group {
-      line-height: .25rem;
-      margin: 0;
-
-  }
-  .info-title {
-      margin: 0;
-  }
-}
-@media (min-width:901px) {
-  .info-details {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      margin: 0;
-  }
-
-  .info-group {
-      line-height: .25rem;
-      margin-right: 30px ;
-  }
-}
-
-@media (max-width: 1399px){
-  .location img {
-      width:100%;
-      max-width:590px;
-      align-self: center;
-  }
-}
 
 /************************Styling for Laptops and Small Screens 769px and up*****************************/
 @media only screen and (min-width: 769px) {
 
-/* This creates a two column view and makes the sidebar navigation visible  */
-.wrapper {
-  grid-template-columns: 275px  1fr;
-  grid-template-areas: 
-      "header  header"
-      "sidebar main";
-  margin-right: 2rem;
-}
-
-/***** Need this to make nav visible *****/
-/***** Nav *****/
-.logo {
-  width: 250px;
-}
-.nav-ul {
- display: flex;
- background-color: var(--primaryColor);
- border-radius: 0 20px 0 0;
- color: var(--background);
- height: 100vh;
- padding-top: 0;
- position: sticky;
- top: 0px;
-}
-
-nav a:hover,
-.activeLink {
-  color: var(--secondaryColor);
-}
-
-.nav-ul li {
-  line-height: 50px;
-}
-.nav-ul img {
-  vertical-align: middle;
-  padding-right: 5px;
-}
-
-/* hides hamburger button */
-.hamburger {
-  display: none;
-}
-/***** styling for content headings *****/
-
-
-}
-
-
-
-/************************Styling for Desktops and Large Screens 1200px Up*****************************/
-@media (min-width: 1200px) {
-
+  /* This creates a two column view and makes the sidebar navigation visible  */
   .wrapper {
-      grid-template-columns: 275px 1fr;
-      grid-template-areas:
-          "header  header header"
-          "sidebar main main";
+    grid-template-columns: 275px  1fr;
+    grid-template-areas: 
+    "header  header"
+    "sidebar profile"
+    "sidebar contact"
+    "sidebar new"
+    "sidebar input"
+    "sidebar update";
+    margin-right: 2rem;
   }
-  h1 {
-    font-size: 37px;
+
+  /***** Need this to make nav visible *****/
+  /***** Nav *****/
+  .logo {
+    width: 250px;
   }
+ .nav-ul {
+   display: flex;
+   background-color: var(--primaryColor);
+   border-radius: 0 20px 0 0;
+   color: var(--background);
+   height: 100vh;
+   padding-top: 0;
+   position: sticky;
+   top: 0px;
+ }
+ 
+ nav a:hover,
+ a.activeLink {
+   color: var(--secondaryColor);
+ }
+
+  .nav-ul li {
+    line-height: 50px;
+  }
+  .nav-ul img {
+    vertical-align: middle;
+    padding-right: 5px;
+  }
+  
+  /* hides hamburger button */
+  .hamburger {
+    display: none;
+  }
+  /***** styling for content headings *****/
   h2 {
-    font-size: 28px;
+      font-size: 22px;
+    }
   }
 
-  .profile {
-      flex-direction: row;
-      justify-content: space-evenly;
-      margin-bottom: 30px;
-  }
-  .info-details {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-  }
-  .info-group,
-  .info h1{
-      margin-left: 30px;
-  }
-  .info h1 {
-      margin-bottom: 10px;
-  }
-  .location {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: flex-start;
-
-  }
-  .location-address {
-      display: flex;
-      flex-direction: column;
-      padding: 0 13rem 0 1rem;
-  }
-  .address p{
-      margin-bottom: 10px;
+  .container {
+   display: inline-block;
+   margin-left: 15%;
   }
 
-  .all{
-    display: flex;
-    justify-content: space-between;
-  }
-
-  main header{
-    margin-left: 400px; 
+  .container1 {
+    display:grid;
+    grid-template-areas: "container1"; 
   }
 
   
@@ -381,5 +266,64 @@ nav a:hover,
 
 
 
+/************************Styling for Desktops and Large Screens 1200px Up*****************************/
+@media (min-width: 1400px) {
 
+    .wrapper {
+        grid-template-columns: 275px 1fr;
+        grid-template-areas:
+        "header  header header"
+        "sidebar profile profile"
+        "sidebar contact input"
+        "sidebar new input"
+        "sidebar update update";
+    }
+    h1 {
+      font-size: 37px;
+    }
+    h2 {
+      font-size: 28px;
+    }
+    .profile {
+      display: flex;
+    }
+    .profile h1 {
+      padding: 0;
+      margin: 0;
+    }
+    .userPic {
+      display: block;
+    }
+
+    .container1{
+      display:inline-grid;
+      padding: 10px;   
+    }
+
+    .info-input {
+      width: 400px;
+      margin-left: 0;
+      margin-left: -300px;
+    }
+
+    .contact {
+      width: 60%;
+      height: 500px;
+    }
+
+    .new {
+      width: 60%;
+      margin-top: -500px;
+      margin-left: 100px;
+    }
+
+    
+
+
+
+
+
+}
+.btn-container{
+  text-align: center;
 }
