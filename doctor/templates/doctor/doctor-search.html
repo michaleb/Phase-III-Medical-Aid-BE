@@ -91,8 +91,8 @@
                     <div class="col6">Phone</div>              
                 </div>
                 {% for patient in patients %}
-                    <a class="row row-results bubble-style" href="{% url 'doctor-patient' %}">
-                    <p><img class="col1" src="{% static 'doctor/images/doctor-dash/user-icon.svg' %}" alt="Image of patient"></p>
+                    <a class="row row-results bubble-style" href="{% url 'doctor-patient' patient.id %}">
+                    <p><img class="col1" src="{% static 'doctor/images/doctor-dash/user-icon-small.svg' %}" alt="Image of patient"></p>
                     <div class="col2"><b>{{patient.patient.first_name}} {{patient.patient.last_name}}</b></div>
                     <div class="col3">{{patient.sex}}</div>
                     <div class="col4">{{patient.age}}</div>

@@ -20,7 +20,7 @@ from .views import (
 
 urlpatterns = [
     path('doctor-dash/', doctor_dash_view, name = "doctor-dash"),
-    path('doctor-patient/', doctor_patient_view, name = "doctor-patient"),
+    path('doctor-patient/<int:pk>/', doctor_patient_view, name = "doctor-patient"),
     path('doctor-search/', doctor_search_view, name = "doctor-search"),
     path('doctor-consultations/', doctor_consultation_view, name = "doctor-consultations"),
     path('doctor-appointment/', doctor_appointment_view, name = "doctor-appointment"),

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -8,6 +8,9 @@ import datetime
 from aidApp.models import Feedback, Patient, Health_Practitioner, Clinic, Appointment
 from .forms import ConsultationForm
 
+from aidApp.models import Feedback, Patient, Health_Practitioner, Clinic
+from .forms import HealthPractitionerForm # import form
+import ast
 
 # Create your views here.
 
@@ -24,16 +27,20 @@ def doctor_dash_view(request):
 def doctor_profile_view(request):
     user = User.objects.get(username = request.user.username)
     doctor = Health_Practitioner.objects.get(health_practitioner = user)
-    
+    insurance_accepted = ast.literal_eval(doctor.insurance_accepted)
     context = {
         'doctor': doctor,
+        'insurance_accepted': insurance_accepted
         
     }
     return render(request, 'doctor/doctor-profile.html', context)
     
 
-def doctor_patient_view(request):
-    return render(request, 'doctor/doctor-patient.html')
+def doctor_patient_view(request, pk):
+    
+    patient = get_object_or_404(Patient, id=pk)
+
+    return render(request, 'doctor/doctor-patient.html', context={ 'patient': patient})
 
 def doctor_consultation_view(request):
     return render(request, 'doctor/doctor-consultations.html')
@@ -41,10 +48,10 @@ def doctor_consultation_view(request):
 def doctor_search_view(request):
     if request.method == "POST":
         search = request.POST.get('search')
-        patients =Patient.objects.filter(Q(patient__first_name__icontains=search) | Q(patient__last_name__icontains=search))
+        patients = Patient.objects.filter(Q(patient__first_name__icontains=search) | Q(patient__last_name__icontains=search))
     else:
         patients = Patient.objects.all()
-
+    
     context = {
         'patients': patients,
         
@@ -117,10 +124,32 @@ def doctor_confirm_view(request):
 def doctor_edit_view(request):
     user = User.objects.get(username = request.user.username)
     doctor = Health_Practitioner.objects.get(health_practitioner = user)
+    instance = get_object_or_404(Health_Practitioner, health_practitioner=request.user)
+    #insurance_accepted = doctor.insurance_accepted
+    insurance_accepted = ast.literal_eval(doctor.insurance_accepted)
+    
+    if request.method == 'POST':
+        form = HealthPractitionerForm(request.POST)
+        if form.is_valid():
+            doctor.clinics = form.cleaned_data['clinics']
+            doctor.telephone = form.cleaned_data['telephone']
+            doctor.specialty = form.cleaned_data['specialty']
+            doctor.consultation_times = form.cleaned_data['consultation_times']
+            doctor.insurance_accepted = form.cleaned_data['insurance_accepted']
+            doctor.languages = form.cleaned_data['languages']
+            doctor.accepting_new_patients = form.cleaned_data['accepting_new_patients']
+            doctor.save()
+            return redirect('doctor-edit')
+        else:
+            print(form.errors)
+    else:
+        form = HealthPractitionerForm(instance=instance)
+       
     
     context = {
         'doctor': doctor,
-        
+        'form': form,
+        'insurance_accepted': insurance_accepted,
     }
     return render(request, 'doctor/doctor-edit.html', context)
 
@@ -183,3 +212,5 @@ def doctor_consultation_view(request, id=None):
     
 
 
+
+    return render(request, 'doctor/doctor-edit.html', context)

@@ -25,12 +25,12 @@
         <nav>
             <ul class="nav-ul" id="nav-ul">
                 <li>
-                    <a href="patient-dash.html">
+                    <a href="{% url 'patient-dash' %}">
                         <img src="{% static 'patient/images/patient-profile-img/dashboard-white.svg' %}" alt="dashboard icon">
                         Dashboard</a>
                 </li>
                 <li>
-                    <a href="patient-profile.html">
+                    <a href="{% url 'patient-profile' %}">
                         <img src="{% static 'patient/images/patient-images/profile-icon.svg' %}" alt="profile icon">
                         Profile</a>
                 </li>
@@ -40,7 +40,7 @@
                         Talk to a Doctor</a>
                 </li>
                 <li>
-                    <a href="patient-clinic.html">
+                    <a href="{% url 'patient-clinic' %}">
                         <img src="{% static 'patient/images/patient-images/clinic-icon.svg' %}" alt="clinics icon">
                         Pharmacies and Clinics</a>
                 </li>
@@ -58,7 +58,7 @@
             </ul>
         </nav>
         <main>
-            <a class="back" href="patient-dash.html">< Back</a>
+            <a class="back" href="{% url 'patient-dash' %}">< Back</a>
             <section class="support">
                 <h1 class="main-heading">Contact Support</h1>
                 <p>Your message has been submitted and you will receive an email confirmation shortly.

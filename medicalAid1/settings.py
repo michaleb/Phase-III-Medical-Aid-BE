@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'phone_field',
     'doctor',
-    'patient'
+    'patient',
+    'widget_tweaks'
 ]
 SITE_ID = 1
 
