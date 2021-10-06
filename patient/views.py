@@ -56,6 +56,7 @@ def patient_dash_view(request):
 
     return render(request, 'patient/patient-dash.html')
 
+@login_required(login_url='/users/login')
 def patient_doctor_view(request):
     
     context = {
@@ -72,6 +73,7 @@ def DocProfile(request, id=None):
     hp = Health_Practitioner.objects.get(health_practitioner_id=id)
     cl = Clinic.objects.filter(health_practitioner=hp)
     form = DocProfileForm()
+    print('CLINICS', cl)
     
     form = {'health_practitioner' : hp,
             'professional_title' : hp.professional_title,
@@ -183,9 +185,6 @@ def CreateAppointment(request, id=None):
               }    
     return render(request, 'patient/patient-appt.html', context)
     
-    
-               
-
 
 def patient_profile_view(request):
 
