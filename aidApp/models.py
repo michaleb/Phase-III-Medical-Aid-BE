@@ -178,7 +178,7 @@ class Appointment(models.Model):
     app_status = models.CharField(blank=True, max_length=10)
   
     def __str__(self):
-        return "{} ,{} ,{} ,{} ,{}".format(self.patient, self.appointment_date, self.time, self.health_practitioner, self.app_status)
+        return "{} ,{} ,{} ,{} ,{}".format(self.patient, self.appointment_date, self.time, self.appt_reason, self.health_practitioner, self.app_status)
     
     @property
     def time(self):
