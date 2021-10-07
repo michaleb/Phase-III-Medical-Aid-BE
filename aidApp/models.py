@@ -44,6 +44,7 @@ class Patient(models.Model):
     registration_date = models.DateTimeField(auto_now_add=True)
     sex = models.CharField(max_length=20)
     marital_status = models.CharField(max_length=50) 
+    race_or_ethnicity = models.CharField(max_length=60, blank=True, null=True)
     # medical_history = models.TextField(blank=True, null=True)
     @property
     def age(self):
@@ -55,20 +56,26 @@ class Patient(models.Model):
 
 class Patient_Contact_Info(models.Model):
     
-    patient = models.ForeignKey('Patient', null=True, on_delete=models.CASCADE)
-    address_1 = models.TextField(blank=True, null=True)
-    address_2 = models.TextField(blank=True, null=True)
-    city = models.TextField(blank=True, null=True)
-    state = models.TextField(blank=True, null=True)
-    zip_code = models.TextField(blank=True, null=True)
-    ec_name = models.TextField(blank=True, null=True) # ec - Emergency Contact
-    ec_phone_number = models.TextField(blank=True, null=True)
-    ec_address_1 = models.TextField(blank=True, null=True)
-    ec_address_2 = models.TextField(blank=True, null=True)
-    ec_city = models.TextField(blank=True, null=True)
-    ec_state = models.TextField(blank=True, null=True)
-    ec_zip_code = models.TextField(blank=True, null=True)
+    patient = models.OneToOneField('Patient', null=True, on_delete=models.CASCADE)
+    address_1 = models.CharField(max_length= 30, blank=True, null=True)
+    address_2 = models.CharField(max_length= 30,blank=True, null=True)
+    city = models.CharField(max_length= 30,blank=True, null=True)
+    state = models.CharField(max_length= 30,blank=True, null=True)
+    zip_code = models.CharField(max_length= 10,blank=True, null=True)
+    
+    
+class Emergency_Contact_Info(models.Model):
 
+    patient = models.OneToOneField('Patient', null=True, on_delete=models.CASCADE)
+    ec_name = models.CharField(max_length= 30, blank=True, null=True) 
+    ec_phone_number = models.CharField(max_length= 30, blank=True, null=True)
+    ec_email = models.CharField(max_length= 30, blank=True, null=True)
+    ec_address_1 = models.CharField(max_length= 30, blank=True, null=True)
+    ec_address_2 = models.CharField(max_length= 30, blank=True, null=True)
+    ec_city = models.CharField(max_length= 30, blank=True, null=True)
+    ec_state = models.CharField(max_length= 30, blank=True, null=True)
+    ec_zip_code = models.CharField(max_length= 10, blank=True, null=True)
+    
 
 
 class Medical_History(models.Model):
@@ -180,7 +187,7 @@ class Appointment(models.Model):
     app_status = models.CharField(blank=True, max_length=10)
   
     def __str__(self):
-        return "{} ,{} ,{} ,{} ,{}".format(self.patient, self.appointment_date, self.time, self.health_practitioner, self.app_status)
+        return "{} ,{} ,{} ,{} ,{}".format(self.patient, self.appointment_date, self.time, self.appt_reason, self.health_practitioner, self.app_status)
     
     @property
     def time(self):

@@ -66,6 +66,7 @@
         <div class="heading">
             <h2>Recent Requests</h2>
         </div>
+        
         <div class="bubble-heading">
             <p><b>Patient</b></p>
             <p><b>Reason for Appointment</b></p>
@@ -73,30 +74,47 @@
             <p><b>Time</b></p>
             <p><b>Action</b></p>
         </div>
+        {% for appointment in appointment_list %}
         <div class="request-bubble bubble-style">
+                        
             <div class="patient">
                 <img src="{% static 'doctor/images/doctor-profile/kirk.svg' %}" alt="image of recent patient">
-                <p><b>Mr. James Kirk</b></p>
+                <p><b>{{appointment.0}}</b></p>
             </div>
             <div class="reason">
-                <p>Blood test and physical</p>
+                <p>{{appointment.1}}</p> <!--Blood test and physical-->
             </div>
             <div class="date">
-                <p>6/7/21</p>
+                <p>{{appointment.2}}</p>
             </div>
             <div class="time">
-                <p>11:00am</p>
+                <p>{{appointment.3}}</p>
             </div>
-            <div class="buttons"> 
-                <div class="review-btns">
-                <button class="review">Review</button>
-                </div>
-                <div class="accept-btns">
-                <button class="accept">Accept</button>
-                </div>
-            </div>    
+
+            {% if messages %} 
+            <ul class="message">
+            {% for message in messages %}
+            <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+            </ul>
+            {% endfor %}
+    
+            {% else %} 
+            <form action="" method="POST">
+                {% csrf_token %} 
+                
+                <div class="buttons"> 
+                    <div class="review-btns">
+                    <button type="submit" name="app_status" button class="review" value=>{{form.app_status.0}}</button>
+                    </div>
+                    <div class="accept-btns">
+                    <button type="submit" name="app_status" button class="accept" value=>{{form.app_status.1}}</button>
+                    </div>
+                </div> 
+            {% endif %}
+            
         </div>
-        <div class="request-bubble bubble-style">
+        {% endfor %}
+        {% comment %}<div class="request-bubble bubble-style">
             <div class="patient">
                 <img src="{% static 'doctor/images/doctor-profile/keiko.svg' %}" alt="image of recent patient">
                 <p><b>Mrs. Keiko O'brien</b></p>
@@ -142,6 +160,7 @@
                     </div>
                 </div>    
         </div>
+        {% endcomment %}
     </section>
      <!--Consultations Previous-->
      <section class="consultations">

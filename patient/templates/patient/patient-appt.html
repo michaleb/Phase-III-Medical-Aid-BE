@@ -100,7 +100,7 @@
                     </div>
                 </div>
                 <div class="rating-review-info">
-                    <h1 class="rating">4.6</h1>
+                    <h1 class="rating">{{gform.rating_reviews}}</h1><!--46-->
                     <div class="star-rating">
                         <img src="{% static 'patient/images/patient-doctor-profile-img/star.svg' %}">
                         <img src="{% static 'patient/images/patient-doctor-profile-img/star.svg' %}">
@@ -109,8 +109,8 @@
                         <img src="{% static 'patient/images/patient-doctor-profile-img/star.svg' %}">
                     </div>
                         <div class="review">
-                        <p><b>34 </b>Reviews</p>
-                        <p><b>30 </b>Patient Comments</p>
+                        <p><b>{{gform.reviews}} </b>Reviews</p><!--34-->
+                        <p><b>{{gform.patient_comments}} </b>Patient Comments</p><!--30-->
                        
                     </div>
                     
