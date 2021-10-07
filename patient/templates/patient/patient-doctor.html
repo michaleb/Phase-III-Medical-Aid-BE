@@ -86,7 +86,7 @@
                     <p><b>Phone</b></p>
                 </div>
                 {% for doctor in doctors %}
-                <a class="doctors-bubble bubble-style">
+                <a href="{% url 'patient-doctor-profile' doctor.id %}" class="doctors-bubble bubble-style">
                     <div class="doctor">
                         <img src="{% static 'patient/images/patient-doctor-img/patient-doctor-icon.png' %}" alt="image of doctor">
                         <div class="doctor-info">
