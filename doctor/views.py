@@ -4,13 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.db.models import Q
-import datetime
+import datetime, ast
 from aidApp.models import Feedback, Patient, Health_Practitioner, Clinic, Appointment
-from .forms import ConsultationForm
+from .forms import ConsultationForm, HealthPractitionerForm
 
-from aidApp.models import Feedback, Patient, Health_Practitioner, Clinic
-from .forms import HealthPractitionerForm # import form
-import ast
 
 # Create your views here.
 
@@ -213,4 +210,4 @@ def doctor_consultation_view(request, id=None):
 
 
 
-    return render(request, 'doctor/doctor-edit.html', context)
+    #return render(request, 'doctor/doctor-edit.html', context)
