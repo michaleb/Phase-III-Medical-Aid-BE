@@ -203,7 +203,7 @@ def CreateAppointment(request, id=None):
                                                         appointment_date= app_date,
                                                         timeslots = timeslot, 
                                                         appt_reason=app_reason,
-                                                        app_status="PENDING")
+                                                        app_status=0)
                 appointment.save()
                 hp.appointments_pending = hp.appointments_pending +1
                 hp.save()
