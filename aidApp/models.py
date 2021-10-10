@@ -45,7 +45,7 @@ class Patient(models.Model):
     sex = models.CharField(max_length=20)
     marital_status = models.CharField(max_length=50) 
     race_or_ethnicity = models.CharField(max_length=60, blank=True, null=True)
-    # medical_history = models.TextField(blank=True, null=True)
+    smoker = models.CharField(max_length=3, default='No')
     @property
     def age(self):
         return tz.now().year - parse_date(self.D_O_B).year
@@ -67,21 +67,20 @@ class Patient_Contact_Info(models.Model):
 class Emergency_Contact_Info(models.Model):
 
     patient = models.OneToOneField('Patient', null=True, on_delete=models.CASCADE)
-    ec_name = models.CharField(max_length= 30, blank=True, null=True) 
-    ec_phone_number = models.CharField(max_length= 30, blank=True, null=True)
-    ec_email = models.CharField(max_length= 30, blank=True, null=True)
-    ec_address_1 = models.CharField(max_length= 30, blank=True, null=True)
-    ec_address_2 = models.CharField(max_length= 30, blank=True, null=True)
-    ec_city = models.CharField(max_length= 30, blank=True, null=True)
-    ec_state = models.CharField(max_length= 30, blank=True, null=True)
-    ec_zip_code = models.CharField(max_length= 10, blank=True, null=True)
+    name = models.CharField(max_length= 30, blank=True, null=True) 
+    relation = models.CharField(max_length=30,blank=True, null=True)
+    phone_number = models.CharField(max_length= 30, blank=True, null=True)
+    email = models.CharField(max_length= 30, blank=True, null=True)
+    address_1 = models.CharField(max_length= 30, blank=True, null=True)
+    address_2 = models.CharField(max_length= 30, blank=True, null=True)
+    city = models.CharField(max_length= 30, blank=True, null=True)
+    state = models.CharField(max_length= 30, blank=True, null=True)
+    zip_code = models.CharField(max_length= 10, blank=True, null=True)
     
 
 
 class Medical_History(models.Model):
 
-    #permissions = (('can_edit_medical_history', 'Can update medical history'),)
-    
     patient = models.ForeignKey('Patient', null=True, on_delete=models.CASCADE)
     health_practitioner = models.ForeignKey('Health_Practitioner', null=True, on_delete=models.SET_NULL)
     date_visited = models.DateField(default=tz.now)
