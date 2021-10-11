@@ -4,10 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.db.models import Q
-import datetime
-from aidApp.models import Feedback, Patient, Health_Practitioner, Clinic
-from .forms import HealthPractitionerForm # import form
-import ast
+import datetime, ast
+from aidApp.models import Feedback, Patient, Health_Practitioner, Clinic, Appointment
+from .forms import ConsultationForm, HealthPractitionerForm
+
 
 # Create your views here.
 
@@ -148,5 +148,66 @@ def doctor_edit_view(request):
         'form': form,
         'insurance_accepted': insurance_accepted,
     }
-
     return render(request, 'doctor/doctor-edit.html', context)
+
+
+@login_required
+def doctor_consultation_view(request, id=None):
+
+    context = {}
+    appointment_list = []
+
+    hp = Health_Practitioner.objects.get(id=3) #(id=request.user.id)
+    hp_appointments = list(Appointment.objects.filter(health_practitioner=hp).filter(app_status='PENDING').values())
+    #user = User.objects.get(id=request.user.id) #id=2 for testing or id=request.user.id)
+    #patient = Patient.objects.get(patient=user)
+    print('HP', hp_appointments)
+    print('FIRST APPT PATIENT', hp_appointments[0]['appointment_date'])
+    #dataset = Appointment.objects.filter(health_practitioner=hp).filter(app_status='PENDING')
+    
+    for appointment in hp_appointments:
+
+        patient = Patient.objects.get(patient_id= appointment['patient_id'])
+        appt_reason = appointment['appt_reason']
+        appointment_date = appointment['appointment_date']
+        app_time = Appointment.TIMESLOTS[appointment['timeslots']][1]
+        app_id = appointment['id']
+
+        #user = User.objects.get(id=11) #appointment['id']) #id=2 for testing or id=request.user.id)
+        appointment_data = (patient, appt_reason, appointment_date, app_time)
+       
+        appointment_list.append(appointment_data)
+    
+    
+    if request.method == 'POST':
+
+        appt = Appointment.objects.get(id=app_id)
+        form = ConsultationForm(request.POST, instance=appt)
+        if form.is_valid:
+            app_status = form.cleaned_data['app_status']
+            if app_status == "Accept":
+                
+                appt['app_status'] = app_status
+                appt.save()
+
+            else:
+                appt.delete()
+
+        #app_status = form
+        #form = ConsultationForm(request.POST, instance=app_status)
+        form.save()
+
+    
+    form = ConsultationForm(request.GET)
+    
+    print('APP_LIST', appointment_list)
+    context = {'appointment_list': appointment_list,
+               'form': form,
+              }
+    return render(request, 'doctor/doctor-consultations.html', context)
+    
+    
+
+
+
+    #return render(request, 'doctor/doctor-edit.html', context)

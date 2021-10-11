@@ -71,7 +71,7 @@ def support_success_view(request):
     return render(request, 'aidApp/patient/patient-support-feedback.html')
 
 
-@login_required
+@login_required(login_url='../users/login')
 def CreateContact(request):
     
     context = {}

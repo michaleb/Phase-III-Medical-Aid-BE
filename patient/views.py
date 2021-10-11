@@ -64,6 +64,7 @@ def patient_dash_view(request):
 
     return render(request, 'patient/patient-dash.html', context)
 
+@login_required(login_url='/users/login')
 def patient_doctor_view(request):
     if request.method == "POST":
         specialty_search = request.POST.get('specialty')
@@ -128,10 +129,10 @@ def patient_profile_view(request):
 def DocProfile(request, id=None):
 
     #user = User.objects.get(id = id)
-    hp = Health_Practitioner.objects.get(health_practitioner_id=id)
+    hp = Health_Practitioner.objects.get(id=id) #health_practitioner_id=id)
     cl = Clinic.objects.filter(health_practitioner=hp)
     form = DocProfileForm()
-    
+        
     form = {'health_practitioner' : hp,
             'professional_title' : hp.professional_title,
             'professional_suffix': hp.professional_suffix,
@@ -153,7 +154,7 @@ def DocProfile(request, id=None):
 @login_required
 def CreateAppointment(request, id=None):
     
-    hp = Health_Practitioner.objects.get(health_practitioner_id=id)
+    hp = Health_Practitioner.objects.get(id=id) #health_practitioner_id=id)
     hp_email = User.objects.get(health_practitioner=hp).email
     cl = Clinic.objects.filter(health_practitioner=hp)
     user = User.objects.get(id=request.user.id) #id=2 for testing or id=request.user.id)
@@ -241,6 +242,13 @@ def CreateAppointment(request, id=None):
                'form': form,
               }    
     return render(request, 'patient/patient-appt.html', context)
+    
+
+def patient_profile_view(request):
+
+    return render(request, 'patient/patient-profile.html')
+
+
         
 def patient_clinic_view(request):
     if request.method == "POST":
