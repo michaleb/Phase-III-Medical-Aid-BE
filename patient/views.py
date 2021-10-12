@@ -9,7 +9,7 @@ from django.utils.dateparse import parse_date
 from django.conf import settings
 from django.template.defaulttags import register
 from datetime import date, timedelta
-from aidApp.models import Feedback, Patient, Health_Practitioner, FAQ, Appointment, Clinic, Pharmacy, Patient_Contact_Info
+from aidApp.models import Emergency_Contact_Info, Feedback, Patient, Health_Practitioner, FAQ, Appointment, Clinic, Pharmacy, Patient_Contact_Info, Emergency_Contact_Info
 from .forms import DocProfileForm, AppCreateForm#, AppUpdateForm, AppRetrieveForm 
 
 # Create your views here.
@@ -92,36 +92,39 @@ def patient_doctor_view(request):
 def patient_profile_view(request):
     user = User.objects.get(username = request.user.username)
     patient = Patient.objects.get(patient = user)
-    contacts = Patient_Contact_Info.objects.get(patient = patient)
-    
+    contact = Patient_Contact_Info.objects.get(patient = patient)
+    em_contact = Emergency_Contact_Info.objects.get(patient = patient)
+
     if request.method == 'POST':
         patient.D_O_B = request.POST.get('birthdate')
+        patient.race_or_ethnicity = request.POST.get('ethnicity')
         patient.sex = request.POST.get('gender')
         patient.marital_status = request.POST.get('marital')
         patient.telephone = request.POST.get('phone')
         patient.save()
-        contacts.address_1 = request.POST.get('address1')
-        contacts.address_2 = request.POST.get('address2')
-        contacts.city = request.POST.get('city')
-        contacts.state = request.POST.get('state')
-        contacts.zip_code = request.POST.get('zipcode')
-        contacts.ec_name = request.POST.get('emcontactname')
-        contacts.ec_address_1 = request.POST.get('emaddress1')
-        contacts.ec_address_2 = request.POST.get('emaddress2')
-        contacts.ec_city = request.POST.get('emcity')
-        contacts.ec_state = request.POST.get('emstate')
-        contacts.ec_zip_code = request.POST.get('emzipcode')
-        contacts.ec_phone_numer = request.POST.get('emphone')
-        # contacts.ec_email = request.POST.get('emcontactname')
-        contacts.save()
+        contact.address_1 = request.POST.get('address1')
+        contact.address_2 = request.POST.get('address2')
+        contact.city = request.POST.get('city')
+        contact.state = request.POST.get('state')
+        contact.zip_code = request.POST.get('zipcode')
+        contact.save()
+        em_contact.name = request.POST.get('emcontactname')
+        em_contact.address_1 = request.POST.get('emaddress1')
+        em_contact.address_2 = request.POST.get('emaddress2')
+        em_contact.city = request.POST.get('emcity')
+        em_contact.state = request.POST.get('emstate')
+        em_contact.zip_code = request.POST.get('emzipcode')
+        em_contact.telephone = request.POST.get('emphone')
+        em_contact.email = request.POST.get('ememail')
+        em_contact.save()
         return redirect('patient-profile')
 
 
 
     context = {
         'patient': patient,
-        'contacts': contacts,
-        
+        'contact': contact,
+        'em_contact': em_contact,
     }
     return render(request, 'patient/patient-profile.html', context)
     
@@ -244,9 +247,9 @@ def CreateAppointment(request, id=None):
     return render(request, 'patient/patient-appt.html', context)
     
 
-def patient_profile_view(request):
+# def patient_profile_view(request):
 
-    return render(request, 'patient/patient-profile.html')
+#     return render(request, 'patient/patient-profile.html')
 
 
         
