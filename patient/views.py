@@ -97,6 +97,7 @@ def patient_profile_view(request):
 
     if request.method == 'POST':
         patient.D_O_B = request.POST.get('birthdate')
+        patient.race_or_ethnicity = request.POST.get('ethnicity')
         patient.sex = request.POST.get('gender')
         patient.marital_status = request.POST.get('marital')
         patient.telephone = request.POST.get('phone')
