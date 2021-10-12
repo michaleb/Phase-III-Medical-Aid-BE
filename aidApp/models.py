@@ -45,7 +45,7 @@ class Patient(models.Model):
     sex = models.CharField(max_length=20)
     marital_status = models.CharField(max_length=50) 
     race_or_ethnicity = models.CharField(max_length=60, blank=True, null=True)
-    # medical_history = models.TextField(blank=True, null=True)
+    smoker = models.CharField(max_length=3, default='No')
     @property
     def age(self):
         return tz.now().year - parse_date(self.D_O_B).year
@@ -67,21 +67,21 @@ class Patient_Contact_Info(models.Model):
 class Emergency_Contact_Info(models.Model):
 
     patient = models.OneToOneField('Patient', null=True, on_delete=models.CASCADE)
-    ec_name = models.CharField(max_length= 30, blank=True, null=True) 
-    ec_phone_number = models.CharField(max_length= 30, blank=True, null=True)
-    ec_email = models.CharField(max_length= 30, blank=True, null=True)
-    ec_address_1 = models.CharField(max_length= 30, blank=True, null=True)
-    ec_address_2 = models.CharField(max_length= 30, blank=True, null=True)
-    ec_city = models.CharField(max_length= 30, blank=True, null=True)
-    ec_state = models.CharField(max_length= 30, blank=True, null=True)
-    ec_zip_code = models.CharField(max_length= 10, blank=True, null=True)
+    name = models.CharField(max_length= 30, blank=True, null=True) 
+    relation = models.CharField(max_length=30,blank=True, null=True)
+    #phone_number = models.CharField(max_length= 30, blank=True, null=True)
+    telephone = models.CharField(max_length= 30, blank=True, null=True)
+    email = models.CharField(max_length= 30, blank=True, null=True)
+    address_1 = models.CharField(max_length= 30, blank=True, null=True)
+    address_2 = models.CharField(max_length= 30, blank=True, null=True)
+    city = models.CharField(max_length= 30, blank=True, null=True)
+    state = models.CharField(max_length= 30, blank=True, null=True)
+    zip_code = models.CharField(max_length= 10, blank=True, null=True)
     
 
 
 class Medical_History(models.Model):
 
-    #permissions = (('can_edit_medical_history', 'Can update medical history'),)
-    
     patient = models.ForeignKey('Patient', null=True, on_delete=models.CASCADE)
     health_practitioner = models.ForeignKey('Health_Practitioner', null=True, on_delete=models.SET_NULL)
     date_visited = models.DateField(default=tz.now)
@@ -178,19 +178,24 @@ class Appointment(models.Model):
                 (7, '4:00 PM'),
                 (8, '5:00 PM')]
     
-    
+    STATUS = [(0, 'Pending'), (1, 'Accept'), (2, 'Decline')]
+
     health_practitioner = models.ForeignKey(Health_Practitioner, null=True, on_delete=models.CASCADE) 
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     appointment_date = models.DateField(default=tz.now)
     timeslots = models.IntegerField(choices=TIMESLOTS, default=0)
     appt_reason = TextField(default= 'Annual Physical Examination', max_length=200)
-    app_status = models.CharField(blank=True, max_length=10)
+    app_status = models.IntegerField(choices=STATUS, default=0)
   
     def __str__(self):
-        return "{} ,{} ,{} ,{} ,{}".format(self.patient, self.appointment_date, self.time, self.appt_reason, self.health_practitioner, self.app_status)
+        return "{} ,{} ,{} ,{} ,{}".format(self.patient, self.appointment_date, self.time, self.appt_reason, self.health_practitioner, self.status)
     
     @property
     def time(self):
         return self.TIMESLOTS[self.timeslots][1]
+
+    @property
+    def status(self):
+        return self.STATUS[self.app_status][1]
 
      

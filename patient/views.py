@@ -194,7 +194,7 @@ def CreateAppointment(request, id=None):
             app_date = form.cleaned_data['appointment_date']
             timeslot= form.cleaned_data['timeslots']
             app_reason = form.cleaned_data['appt_reason']
-            
+                        
             # check if date is valid and timeslot unbooked
             if free_timeslot and app_date > date.today()- timedelta(days=1): 
 
@@ -203,7 +203,7 @@ def CreateAppointment(request, id=None):
                                                         appointment_date= app_date,
                                                         timeslots = timeslot, 
                                                         appt_reason=app_reason,
-                                                        app_status="PENDING")
+                                                        app_status=Appointment.STATUS[0][0])
                 appointment.save()
                 hp.appointments_pending = hp.appointments_pending +1
                 hp.save()
