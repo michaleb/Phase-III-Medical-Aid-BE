@@ -18,7 +18,7 @@
 <body>
     <div class="wrapper">
         <!--Header-->
-        <header><a href="#"><img src="{% static 'patient/images/patient-images/logo.svg' %}" class="logo"></a>
+        <header><a href="{% url 'homepage' %}"><img src="{% static 'patient/images/patient-images/logo.svg' %}" class="logo"></a>
             <button class="hamburger" id="hamburger"><img src="{% static 'patient/images/logo/fi_menu.svg' %}"></button>
         </header>
         <!--Navigation-->
@@ -58,9 +58,9 @@
             </ul>
         </nav>
         <main>
-            <a class="back" href="templates/patient/patient-doctor.html">< Back</a>
+            <a class="back" href="{% url 'patient-doctor' %}">< Back</a>
             <section class="dr-section bubble-style">
-                <img src="{% static 'patient/images/patient-doctor-profile-img/drcrusher.svg' %}" alt="Dr Crusher">
+                <img src="{% static 'patient/images/patient-doctor-profile-img/patient-doctor-icon.png' %}" alt="Dr Crusher">
 
                 <div class="dr-info">
                     <h1>{{form.professional_title}} {{form.health_practitioner}} {{form.professional_suffix}}</h1><!--Dr. Beverly Crusher, MD-->
