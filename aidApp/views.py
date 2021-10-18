@@ -109,3 +109,6 @@ def CreateContact(request):
 
 def handler404(request, *args, **argv):
     return render(request, 'aidApp/error.html')
+
+def error(request):
+    return render(request, 'aidApp/error.html')
