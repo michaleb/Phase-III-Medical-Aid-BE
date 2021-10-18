@@ -29,7 +29,7 @@ urlpatterns = [
     path('doctor-support/', doctor_support_view, name = "doctor-support"),
     path('doctor-support-success/', doctor_support_success_view, name = "doctor-support-success"),
     path('doctor-profile/', doctor_profile_view, name = "doctor-profile"),
-    path('doctor-confirm/', doctor_confirm_view, name = "doctor-confirm"),
+    path('doctor-confirm/<int:id>/', doctor_confirm_view, name = "doctor-confirm"),
     path('doctor-edit/', doctor_edit_view, name = "doctor-edit"),
         
 ]

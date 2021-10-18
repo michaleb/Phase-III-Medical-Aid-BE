@@ -65,8 +65,13 @@
         <section class="welcome bubble-style">
             <div class="welcomeAlerts">
                 <h1>Welcome to your dashboard, {{ patient.patient.first_name }}</h1>
-                <p>Your last appointment was on <b>6/28/21</b> at <b>8:00am</b> with <b>Dr. Bostick</b></p>
-                <p>You have <b>NO</b> upcoming appointments scheduled</p>
+                {% if prev_appointment %}
+                <p>Your last appointment was on <b>{{prev_appointment.0}}</b> at <b>{{prev_appointment.1}}</b> with <b>Dr. {{prev_appointment.2}}</b></p><!--6/28/21-->
+                <p>You have <b>{{pending_appointments}}</b> upcoming appointments scheduled</p>
+                {% else %} 
+                <p>You have no previous appointments</p>
+                <p>You have <b>{{pending_appointments}}</b> upcoming appointments scheduled</p>
+                {% endif %}
                 <button class="schedule-btn"><a href="{% url 'patient-doctor' %}">
                 Make an Appointment</a></button>
             </div>

@@ -66,47 +66,70 @@
             <div class="profile">
                 <img src="{% static 'doctor/images/doctor-profile/bostickprofile.svg' %}" alt="image of current user" class="userPic" />
                 <div class="current-user">
-                    <h1>Mr. Michael Bostick</h1>
+                    <h1>{{patient}}</h1>
                 </div>
                 <div class="info">
                     <div class="birth">
                         <h3>Date of Birth</h3>
-                        <p>02/22/1983</p>
+                        <p>{{patient.D_O_B}}</p>
                     </div>
                     <div class="marital">
                         <h3>Marital Status</h3>
-                        <p>Single</p>
+                        <p>{{patient.marital_status}}</p>
                     </div>
+                    
                     <div class="ethnicity">
                         <h3>Ethnicity</h3>
-                        <p>African American</p>
-                        <p>Japanese</p>
-                        <p>Italian</p>
+                        <p>{{patient.race_or_ethnicity }}</p><!--African American-->
+                        <!--p>Japanese</p>
+                        <p>Italian</p-->
+                            
                     </div>
                     <div class="gender">
                         <h3>Gender</h3>
-                        <p>Male</p>
+                        <p>{{patient.sex}}</p>
                     </div>
                     <div class="smoker">
                         <h3>Smoker</h3>
-                        <p>No</p>
+                        <p>{{patient.smoker}}</p>
                     </div>
                     <div class="age">
                         <h3>Age</h3>
-                        <p>35</p>
+                        <p>{{patient.age}}</p>
                     </div>
                 </div>
             </div>
         </section>
+        
         <!-- Buttons-->
         <section class="request-buttons bubble-style">
-            <div class="big-review-btn">
-                <button class="review">Review</button>
-            </div>
-            <div class="big-accept-btn">
-                <button class="accept">Accept</button>
-            </div>
-        </section>
+
+            {% if messages %} 
+                <ul class="message">
+                    {% for message in messages %} 
+                    <b{% ifequal message.tags error %}></b> 
+                    <div class="alert alert-error">{{message}}</div> 
+                    {% else %} 
+                    <div class="alert alert-success">{{message}}</div>
+                    {% endifequal %} 
+                    {% endfor %}
+                </ul>
+
+            {% else %} 
+            <form action="" method="POST">
+                {% csrf_token %} 
+                                              
+                <div class="big-decline-btn">
+                    <button type="submit" button class="review" name="app_status" value="2">Decline</button>
+                </div>
+                
+                <div class="big-accept-btn">
+                    <button type="submit" button class="accept" name="app_status" value="1">Accept</button>
+                </div>
+                      
+            </form> 
+            {% endif %}  
+        </section>      
         <!-- Contact info-->
         <section class="contact">
             <div class="heading">
@@ -114,12 +137,12 @@
             </div>
             <div class="contact-info bubble-style">
                 <h3>Address</h3>
-                <p>2972 Westheimer Rd.</p>
-                <p>Santa Ana. Illinois 85486</p>
+                <p>{{patient_contact.address_1}}</p>
+                <p>{{patient_contact.city}}, {{patient_contact.state}}, {{patient_contact.zip_code}}</p>
                 <h3>Phone</h3>
-                <p>(316)555-0116</p>
+                <p>{{patient.telephone}}</p>
                 <h3>Email</h3>
-                <p>jackson.graham@example.com</p>
+                <p>{{user.email}}</p>
             </div>
         </section>
         <!-- Emergency Contact-->
@@ -127,53 +150,68 @@
             <div class="heading">
                 <h2>Emergency Contact</h2>
             </div>
+            
             <div class="emergency-info bubble-style">
+                {% if patient_econtact %}
                 <div class="info">
                     <div class="name">
                         <h3>Name</h3>
-                        <p>Joshua Graham</p>
+                        <p>{{patient_econtact.name}}</p>
                     </div>
                     <div class="phone">
                         <h3>Phone</h3>
-                        <p>(090)556-3454</p>
+                        <p>{{patient_econtact.phone_number}}</p>
                     </div>
                     <div class="relationship">
                         <h3>Relationship</h3>
-                        <p>Uncle</p>
+                        <p>{{patient_econtact.relation}}</p>
                     </div>
                     <div class="email">
                         <h3>Email</h3>
-                        <p>email@example.com</p>
+                        <p>{{patient_econtact.email}}</p>
                     </div>
                     <div class="address">
                         <h3>Address</h3>
-                        <p>2715 Ash Dr San Jose,</p>
-                        <p>South Dakota 83475</p>
+                        <p>{{patient_econtact.address_1}}</p>
+                        <p>{{patient_econtact.city}}, {{patient_econtact.state}}, {{patient_econtact.zip_code}}</p>
                     </div>
+                {% else %} 
+                    <div class="error response">
+                        <p>No emergency contact information found</p>
+                    </div>    
+                    
                 </div>
+            {% endif %}
+        
         </section>
         <!-- Recent visits   -->
         <section class="visits">
             <div class="heading">
                 <h2>Recent Visits</h2>
             </div>
-            <div class="bubble-heading">
+            {%comment%}<div class="bubble-heading">
                 <p><b>Reason for Appointment</b></p>
                 <p><b>Date</b></p>
                 <p><b>Time</b></p>
-            </div>
+            </div>{%endcomment%}
+            {% for visit in recent_visit%} 
             <div class="visit-bubble bubble-style">
                 <div class="reason">
-                    <p>Blood test and physical</p>
+                    <h3>Reason for Appointment</h3>
+                    <p>{{visit.appt_reason}}</p>
                 </div>
                 <div class="date">
-                    <p>6/7/21</p>
+                    <h3>Date</h3>
+                    <p>{{visit.appointment_date}}</p>
                 </div>
                 <div class="time">
-                    <p>11:00am</p>
+                    <h3>Time</h3>
+                    <p>{{visit.time}}</p>
                 </div>
             </div>
-            <div class="visit-bubble bubble-style">
+            {% endfor %}
+        </section>    
+            {% comment %}<div class="visit-bubble bubble-style">
                 <div class="reason">
                     <p>CT scan of right shoulder</p>
                 </div>
@@ -194,23 +232,35 @@
                 <div class="time">
                     <p>11:00am</p>
                 </div>
-            </div>
-        </section>
+            </div>{% endcomment %} 
+            
+        
         <!-- Medical Records   -->
         <section class="records">
             <div class="heading">
                 <h2>Medical Records</h2>
             </div>
+            {% if medical_records %} 
+            {% for record in medical_records %}
             <div class="records-bubble bubble-style">
                 <div class="test">
-                    <h3>Blood Test</h3>
-                    <p>6/28/21</p>
+                    <h3>{{record.test_results</h3>
+                    <p>{{record.date_visited}}</p>
                 </div>
                 <div class="results-btn">
                     <button class="results">Results</button>
                 </div>
             </div>
+            {% endfor %} 
+            {% else %} 
             <div class="records-bubble bubble-style">
+                <div class="error response">
+                    <p> No medical records found</p>
+                </div> 
+            </div>
+            {% endif %} 
+                        
+            {% comment %}<div class="records-bubble bubble-style">
                 <div class="test">
                     <h3>CT Scan</h3>
                     <p>6/28/21</p>
@@ -227,7 +277,8 @@
                 <div class="results-btn">
                     <button class="results">Results</button>
                 </div>
-            </div>
+            </div>{% endcomment %}
+            
         </section>
 </body>
 
