@@ -57,9 +57,26 @@ def support_success_view(request):
 def patient_dash_view(request):
     user = User.objects.get(username = request.user.username)
     patient = Patient.objects.get(patient = user)
+    appointment = Appointment.objects.filter(Q(app_status=1)& Q(appointment_date__lt=date.today())& Q(patient=patient))
+    pending_appointments = Appointment.objects.filter(Q(app_status=1)& Q(appointment_date__gte=date.today())& Q(patient=patient)).count
     
+    #Select most recent appointment details to render on page
+    if appointment:
+        recent_date = appointment[0].appointment_date
+        for app in appointment:
+            if app.appointment_date >= recent_date:
+                recent_date = app.appointment_date
+                app_time = Appointment.TIMESLOTS[app.timeslots][1]
+                app_doc = app.health_practitioner
+                app_details = [recent_date, app_time, app_doc]
+    
+    else:
+        app_details = [None]
+            
     context = {
-        'patient': patient
+        'patient': patient,
+        'prev_appointment': app_details,
+        'pending_appointments': pending_appointments,
     }
 
     return render(request, 'patient/patient-dash.html', context)
@@ -185,10 +202,10 @@ def CreateAppointment(request, id=None):
         
         form = AppCreateForm(request.POST)
         free_timeslot = True
-        
+
         # check if form data is valid
         if form.is_valid():
-
+            
             for appointment in hp_appointments:
                 if appointment['appointment_date'] == form.cleaned_data['appointment_date']:
                     if appointment['timeslots'] == form.cleaned_data['timeslots']:
@@ -200,13 +217,12 @@ def CreateAppointment(request, id=None):
                         
             # check if date is valid and timeslot unbooked
             if free_timeslot and app_date > date.today()- timedelta(days=1): 
-
                 appointment = Appointment.objects.create(health_practitioner=hp,
                                                         patient=patient, 
                                                         appointment_date= app_date,
                                                         timeslots = timeslot, 
                                                         appt_reason=app_reason,
-                                                        app_status=Appointment.STATUS[0][0])
+                                                        app_status=0)
                 appointment.save()
                 hp.appointments_pending = hp.appointments_pending +1
                 hp.save()
@@ -224,9 +240,9 @@ def CreateAppointment(request, id=None):
                 messages.success(request, "Your appointment request was submitted successfully! Thank you.")
                 
             else:
-                messages.error(request, "Your chosen appointment date and/or time is unavailable. Please go back and choose  other date / time.")
+                messages.error(request, "Your chosen appointment date and/or time is unavailable.")
+                #return redirect('patient-appt', id=id)
                 
-            
         else:
             context = {'gform': gform,
                        'form': form,

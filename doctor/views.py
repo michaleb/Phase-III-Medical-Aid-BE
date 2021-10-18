@@ -1,3 +1,4 @@
+from django.db.models.query import EmptyQuerySet
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -5,7 +6,8 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.db.models import Q
 import datetime, ast
-from aidApp.models import Feedback, Patient, Health_Practitioner, Clinic, Appointment
+from datetime import date
+from aidApp.models import Emergency_Contact_Info, Feedback, Medical_History, Patient, Health_Practitioner, Clinic, Appointment, Patient_Contact_Info
 from .forms import ConsultationForm, HealthPractitionerForm
 
 
@@ -15,9 +17,24 @@ from .forms import ConsultationForm, HealthPractitionerForm
 def doctor_dash_view(request):
     user = User.objects.get(username = request.user.username)
     doctor = Health_Practitioner.objects.get(health_practitioner = user)
+    pending_appointments = Appointment.objects.filter(Q(app_status=1)& Q(appointment_date__gte=date.today())& Q(health_practitioner=doctor))
+
+    #Select next scheduled appointment details to render on page
+    if pending_appointments:
+        next_app_date = pending_appointments[0].appointment_date
+        for app in pending_appointments:
+            if app.appointment_date <= next_app_date:
+                next_app_date = app.appointment_date
+                app_time = Appointment.TIMESLOTS[app.timeslots][1]
+                app_patient = app.patient
+                app_details = [next_app_date, app_time, app_patient]
+    
+    else:
+        app_details = [None]
     
     context = {
-        'doctor': doctor
+        'doctor': doctor,
+        'pending_appointments': app_details,
     }
     return render(request, 'doctor/doctor-dash.html', context)
 
@@ -39,8 +56,6 @@ def doctor_patient_view(request, pk):
 
     return render(request, 'doctor/doctor-patient.html', context={ 'patient': patient})
 
-def doctor_consultation_view(request):
-    return render(request, 'doctor/doctor-consultations.html')
 
 def doctor_search_view(request):
     if request.method == "POST":
@@ -115,8 +130,58 @@ def doctor_support_view(request):
 def doctor_support_success_view(request):
     return render(request, 'doctor/doctor-support-feedback.html')
 
-def doctor_confirm_view(request):
-    return render(request, 'doctor/doctor-confirm.html')
+
+def doctor_confirm_view(request, id=None):
+
+    if request.method == "POST":
+        
+        appt = Appointment.objects.get(id=id)
+        appt.app_status = request.POST.get("app_status")
+        appt.save()
+        
+        if appt.app_status == "1":
+            #appt.save()
+            messages.success(request, "Appointment has been added to your schedule")
+            #return redirect('doctor-consultations')
+        else:
+            #appt.delete()
+            messages.error(request, "Appointment has been removed from your schedule")
+            #return redirect('doctor-consultations')
+    
+    
+    
+    form = ConsultationForm(request.GET)
+    context = {}
+
+    hp_user = User.objects.get(id=request.user.id)
+    hp = Health_Practitioner.objects.get(health_practitioner=hp_user)    
+    patient = Appointment.objects.get(id=id).patient
+    user = User.objects.get(patient=patient)
+    patient_contact = Patient_Contact_Info.objects.get(patient=patient)
+    recent_visit = Appointment.objects.filter(Q(health_practitioner=hp)& Q(patient=patient)& Q(app_status=1)& Q(appointment_date__lt=date.today()))
+    
+    try:
+        patient_econtact = Emergency_Contact_Info.objects.get(patient=patient)
+    except:
+        patient_econtact = None
+            
+    try:
+        medical_records = Medical_History.objects.get(patient=patient)
+    except:
+        medical_records = None
+    
+    finally:
+        context = {'patient': patient,
+                   'patient_contact': patient_contact,
+                   'patient_econtact': patient_econtact, 
+                   'recent_visit': recent_visit,
+                   'medical_records': medical_records,
+                   'form': form,
+                   'user': user,
+                  }
+
+
+    return render(request, 'doctor/doctor-confirm.html', context)
 
 def doctor_edit_view(request):
     user = User.objects.get(username = request.user.username)
@@ -152,62 +217,30 @@ def doctor_edit_view(request):
 
 
 @login_required
-def doctor_consultation_view(request, id=None):
+def doctor_consultation_view(request):
 
     context = {}
-    appointment_list = []
-
-    hp = Health_Practitioner.objects.get(id=3) #(id=request.user.id)
-    hp_appointments = list(Appointment.objects.filter(health_practitioner=hp).filter(app_status='PENDING').values())
-    #user = User.objects.get(id=request.user.id) #id=2 for testing or id=request.user.id)
-    #patient = Patient.objects.get(patient=user)
-    print('HP', hp_appointments)
-    print('FIRST APPT PATIENT', hp_appointments[0]['appointment_date'])
-    #dataset = Appointment.objects.filter(health_practitioner=hp).filter(app_status='PENDING')
     
-    for appointment in hp_appointments:
-
-        patient = Patient.objects.get(patient_id= appointment['patient_id'])
-        appt_reason = appointment['appt_reason']
-        appointment_date = appointment['appointment_date']
-        app_time = Appointment.TIMESLOTS[appointment['timeslots']][1]
-        app_id = appointment['id']
-
-        #user = User.objects.get(id=11) #appointment['id']) #id=2 for testing or id=request.user.id)
-        appointment_data = (patient, appt_reason, appointment_date, app_time)
-       
-        appointment_list.append(appointment_data)
-    
-    
+    user = User.objects.get(id=request.user.id)
+    hp = Health_Practitioner.objects.get(health_practitioner=user)
+    appointments = Appointment.objects.filter(Q(health_practitioner=hp) & Q(app_status=0) & Q(appointment_date__gte=date.today()))
+    prev_appointments = Appointment.objects.filter(Q(health_practitioner=hp) & Q(appointment_date__lt=date.today()))
+        
     if request.method == 'POST':
-
-        appt = Appointment.objects.get(id=app_id)
-        form = ConsultationForm(request.POST, instance=appt)
-        if form.is_valid:
-            app_status = form.cleaned_data['app_status']
-            if app_status == "Accept":
                 
-                appt['app_status'] = app_status
-                appt.save()
+        id = request.POST.get("appointment.id")
+        appt = Appointment.objects.get(id=id)
+        appt.app_status = request.POST.get("app_status")
+        appt.save()
 
-            else:
-                appt.delete()
+        messages.success(request, "Appointment has been added to your schedule")
+        #return redirect('doctor-consultations')
 
-        #app_status = form
-        #form = ConsultationForm(request.POST, instance=app_status)
-        form.save()
-
-    
     form = ConsultationForm(request.GET)
     
-    print('APP_LIST', appointment_list)
-    context = {'appointment_list': appointment_list,
+    context = {'appointments': appointments,
+               'prev_appointments': prev_appointments, 
                'form': form,
               }
     return render(request, 'doctor/doctor-consultations.html', context)
     
-    
-
-
-
-    #return render(request, 'doctor/doctor-edit.html', context)
