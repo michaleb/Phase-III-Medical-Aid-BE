@@ -75,18 +75,19 @@
                         <div class="patient-info">
                             <div>
                                 <label for="birth-date">Date of Birth </label><br>
-                                <input id="birth-date" type="date" name="birthdate" value = {{ patient.D_O_B }}>
+                                <input id="birth-date" type="date" name="birthdate" value="{{patient.D_O_B}}">
                             </div>
                             <div>
                                 <label for="age">Age</label><br>
                                 {% comment %} <p id="age" name="age">{{ patient.age }}</p> {% endcomment %}
-                                <input id="age" name="age" readonly value = {{ patient.age }}>
+                                <input id="age" name="age" readonly value="{{patient.age}}">
                             </div>
                             <div>
                             <label for="ethnicity">Race/Ethnicity</label><br>
                             <select id="ethnicity" name="ethnicity">
+                                <option>{{patient.race_or_ethnicity}}</option>
                                 <option value="Asian">Asian or Pacific Islander</option>
-                                <option value="Black">Black or African American"</option>
+                                <option value="Black">Black or African American</option>
                                 <option value="Hispanic">Hispanic or Latino</option>
                                 <option value="Native">Native American or Alaskan Native</option>
                                 <option value="White">White or Caucasian</option>
@@ -95,11 +96,11 @@
                             </select></div>
                             <div>
                             <label for="gender">Gender</label><br>
-                            <input id="gender" type="text" name="gender" value = {{ patient.sex }}>
+                            <input id="gender" type="text" name="gender" value="{{patient.sex}}">
                             </div>
                             <div>
                             <label for="martial-status">Marital status</label><br>
-                            <input id="martial-status" type="text" name="marital" value = {{ patient.marital_status }}></div>
+                            <input id="martial-status" type="text" name="marital" value="{{patient.marital_status}}"></div>
                         </div>
                     </div>
                 </section>
@@ -111,19 +112,19 @@
                     </div>
                     <div class="contact-info">
                         <label for="address1">Address 1</label><br>
-                        <input id="address1" type="text" name="address1" value={{ contacts.address_1 }}><br>
+                        <input id="address1" type="text" name="address1" value="{{contact.address_1}}"><br>
                         <label for="address2">Address 2</label><br>
-                        <input id="address2" type="text" name="address2" value={{ contacts.address_2 }}><br>
+                        <input id="address2" type="text" name="address2" value="{{contact.address_2}}"><br>
                         <label for="city">City</label><br>
-                        <input id="city" type="text" name="city" value={{ contacts.city }}><br>
+                        <input id="city" type="text" name="city" value="{{contact.city}}"><br>
                         <label for="state">State</label><br>
-                        <input id="state" type="text" name="state" value={{ contacts.state }}><br>
+                        <input id="state" type="text" name="state" value="{{contact.state}}"><br>
                         <label for="zipcode">Zip Code</label><br>
-                        <input id="zipcode" type="number" name="zipcode" value={{ contacts.zip_code }}><br>
+                        <input id="zipcode" type="number" name="zipcode" value="{{contact.zip_code}}"><br>
                         <label for="phone">Phone Number</label><br>
-                        <input id="phone" type="text" name="phone" value={{ patient.telephone }}><br>
+                        <input id="phone" type="text" name="phone" value="{{patient.telephone}}"><br>
                         <label for="email">Email</label><br>
-                        <input id="email" type="email" name="email"><br>
+                        <input id="email" type="email" name="email" value="{{patient.patient.email}}"><br>
                     </div>
                 </section>
                 <!--Emergency-Contact-->
@@ -133,21 +134,23 @@
                     </div>
                     <div class="emergency-contact">
                         <label for="contactname">Name</label><br>
-                        <input id="contactname" type="text" name="emcontactname" value={{ contacts.ec_name }}><br>
+                        <input id="contactname" type="text" name="emcontactname" value="{{em_contact.name}}"><br>
+                        <label for="relation">Relationship</label><br>
+                        <input id="relation" type="text" name="emrelation" value="{{em_contact.relation}}"><br>
                         <label for="contactaddress1">Address 1</label><br>
-                        <input id="contactaddress1" type="text" name="emaddress1" value={{ contacts.ec_address_1 }}><br>
+                        <input id="contactaddress1" type="text" name="emaddress1" value="{{em_contact.address_1}}"><br>
                         <label for="contactaddress2">Address 2</label><br>
-                        <input id="contactaddress2" type="text" name="emaddress2" value={{ contacts.ec_address_2 }}><br>
+                        <input id="contactaddress2" type="text" name="emaddress2" value="{{em_contact.address_2}}"><br>
                         <label for="contactcity">City</label><br>
-                        <input id="contactcity" type="text" name="emcity" value={{ contacts.ec_city }}><br>
+                        <input id="contactcity" type="text" name="emcity" value="{{em_contact.city}}"><br>
                         <label for="contactstate">State</label><br>
-                        <input id="contactstate" type="text" name="emstate" value={{ contacts.ec_state }}><br>
+                        <input id="contactstate" type="text" name="emstate" value="{{em_contact.state}}"><br>
                         <label for="contactzipcode">Zip Code</label><br>
-                        <input id="contactzipcode" type="number" name="emzipcode" value={{ contacts.ec_zip_code }}><br>
+                        <input id="contactzipcode" type="number" name="emzipcode" value="{{em_contact.zip_code}}"><br>
                         <label for="contactphone">Phone Number</label><br>
-                        <input id="contactphone" type="tel" name="emphone" value={{ contacts.ec_phone_number }}><br>
+                        <input id="contactphone" type="tel" name="emphone" value="{{em_contact.telephone}}"><br>
                         <label for="contactemail">Email</label><br>
-                        <input id="contactemail" type="email" name="ememail">
+                        <input id="contactemail" type="email" name="ememail" value="{{em_contact.email}}">
                     </div>
 
                 </section>
