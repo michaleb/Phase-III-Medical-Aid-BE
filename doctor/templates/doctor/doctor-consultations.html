@@ -62,6 +62,7 @@
             </ul>
         </nav>
        <!--Consultations Recent Requests-->
+       
        <section class="requests">
         <div class="heading">
             <h2>Recent Requests</h2>
@@ -74,46 +75,59 @@
             <p><b>Time</b></p>
             <p><b>Action</b></p>
         </div>
-        {% for appointment in appointment_list %}
+        {% if appointments %} 
+        {% for appointment in appointments %}
         <div class="request-bubble bubble-style">
-                        
             <div class="patient">
                 <img src="{% static 'doctor/images/doctor-profile/kirk.svg' %}" alt="image of recent patient">
-                <p><b>{{appointment.0}}</b></p>
+                <p><b>{{appointment.patient}}</b></p>
             </div>
             <div class="reason">
-                <p>{{appointment.1}}</p> <!--Blood test and physical-->
+                <p>{{appointment.appt_reason}}</p> <!--Blood test and physical-->
             </div>
             <div class="date">
-                <p>{{appointment.2}}</p>
+                <p>{{appointment.appointment_date}}</p>
             </div>
             <div class="time">
-                <p>{{appointment.3}}</p>
+                <p>{{appointment.time}}</p>
             </div>
-
             {% if messages %} 
             <ul class="message">
-            {% for message in messages %}
-            <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
-            </ul>
-            {% endfor %}
-    
-            {% else %} 
-            <form action="" method="POST">
-                {% csrf_token %} 
-                
-                <div class="buttons"> 
-                    <div class="review-btns">
-                    <button type="submit" name="app_status" button class="review" value=>{{form.app_status.0}}</button>
-                    </div>
-                    <div class="accept-btns">
-                    <button type="submit" name="app_status" button class="accept" value=>{{form.app_status.1}}</button>
-                    </div>
-                </div> 
-            {% endif %}
+                {% for message in messages %} 
+                <li{% ifequal message.tags error %}></li>
+                <div class="alert alert-error">{{message}}</div> 
+                {% else %} 
+                <div class="alert alert-success">{{message}}</div>
+                {% endifequal %} 
+                {% endfor %}
             
+            </ul>           
+           
+            {% else %} 
+            <div class="buttons"> 
+                <a href="{% url 'doctor-confirm' appointment.id %}"> <div class="review-btns">
+                <button type="submit" name="review" button class="review" value=>Review</button>
+                </div></a>
+
+                <form action="" method="POST">
+                    {% csrf_token %} 
+                    <div class="accept-btns">
+                        <input type="hidden" name="appointment.id" value="{{appointment.id}}"></input>
+                        <button type="submit" button class="accept" name="app_status" value="1">Accept</button>
+                    </div>
+                </form>    
+            </div> 
+            {% endif %}
         </div>
-        {% endfor %}
+        {% endfor %} 
+        {% else %} 
+        <div class="request-bubble bubble-style">
+            <div class="error response">
+                <p> No appointments pending </p>
+            </div> 
+        </div>        
+        {% endif %}
+        
         {% comment %}<div class="request-bubble bubble-style">
             <div class="patient">
                 <img src="{% static 'doctor/images/doctor-profile/keiko.svg' %}" alt="image of recent patient">
@@ -161,7 +175,7 @@
                 </div>    
         </div>
         {% endcomment %}
-    </section>
+        </section>
      <!--Consultations Previous-->
      <section class="consultations">
         <div class="heading">
@@ -174,25 +188,37 @@
             <p><b>Time</b></p>
             <p><b>Results</b></p>
         </div>
+        
+        {% if prev_appointments %} 
+        {% for appointment in prev_appointments %} 
         <div class="request-bubble bubble-style">
             <div class="patient">
                 <img src="{% static 'doctor/images/doctor-profile/kirk.svg' %}" alt="image of recent patient">
-                <p><b>Mr. James Kirk</b></p>
+                <p><b>{{appointment.patient}}</b></p>
             </div>
             <div class="reason">
-                <p>Blood test and physical</p>
+                <p>{{appointment.appt_reason}}</p>
             </div>
             <div class="date">
-                <p>6/7/21</p>
+                <p>{{appointment.appointment_date}}</p>
             </div>
             <div class="time">
-                <p>11:00am</p>
+                <p>{{appointment.time}}</p>
             </div>  
             <div class="pdf-btns">
                 <button class="download">Download pdf</button>
             </div>
         </div>
+        {% endfor %} 
+        {% else %} 
         <div class="request-bubble bubble-style">
+            <div class="error response">
+                <p><b> No previous appointments </b></p> 
+            </div>    
+        </div>
+        {% endif %}
+               
+        {% comment %}<div class="request-bubble bubble-style">
             <div class="patient">
                 <img src="{% static 'doctor/images/doctor-profile/keiko.svg' %}" alt="image of recent patient">
                 <p><b>Mrs. Keiko O'brien</b></p>
@@ -228,6 +254,7 @@
                 <button class="download">Download pdf</button>
             </div>
         </div>
+        {% endcomment %}
     </section>
 </body>
 </html>
