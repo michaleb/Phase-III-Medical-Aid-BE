@@ -178,24 +178,24 @@ class Appointment(models.Model):
                 (7, '4:00 PM'),
                 (8, '5:00 PM')]
     
-    STATUS = [(0, 'Pending'), (1, 'Accept'), (2, 'Decline')]
+    #STATUS = [(0, 'Pending'), (1, 'Accept'), (2, 'Decline')]
 
     health_practitioner = models.ForeignKey(Health_Practitioner, null=True, on_delete=models.CASCADE) 
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     appointment_date = models.DateField(default=tz.now)
     timeslots = models.IntegerField(choices=TIMESLOTS, default=0)
     appt_reason = TextField(default= 'Annual Physical Examination', max_length=200)
-    app_status = models.IntegerField(choices=STATUS, default=0)
+    app_status = models.IntegerField(default=0)
   
     def __str__(self):
-        return "{} ,{} ,{} ,{} ,{}".format(self.patient, self.appointment_date, self.time, self.appt_reason, self.health_practitioner, self.status)
+        return "{} ,{} ,{} ,{} ,{}".format(self.patient, self.appointment_date, self.time, self.appt_reason, self.health_practitioner, self.app_status)
     
     @property
     def time(self):
         return self.TIMESLOTS[self.timeslots][1]
 
-    @property
-    def status(self):
-        return self.STATUS[self.app_status][1]
+    #@property
+    #def status(self):
+    #    return self.STATUS[self.app_status][1]
 
      
