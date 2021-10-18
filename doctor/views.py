@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.db.models import Q
 import datetime, ast
+from django.utils.dateparse import parse_date
 from aidApp.models import Feedback, Patient, Health_Practitioner, Clinic, Appointment
 from .forms import ConsultationForm, HealthPractitionerForm
 
@@ -59,13 +60,18 @@ def doctor_appointment_view(request):
     return render(request, 'doctor/doctor-appointment.html')
 
 def doctor_schedule_view(request):
+    user = User.objects.get(username = request.user.username)
+    doctor = Health_Practitioner.objects.get(health_practitioner = user)
+    
     today = datetime.date.today()
     month = today.month
     year = today.year
     day = today.day
+    appt = Appointment.objects.filter(health_practitioner=doctor)
+    for a in appt:
+        print(a.appointment_date)
+        print((a.appointment_date).day)
     
-    
-
     context = {
         'today': today,
         'month': month,
@@ -206,7 +212,8 @@ def doctor_consultation_view(request, id=None):
               }
     return render(request, 'doctor/doctor-consultations.html', context)
     
-    
+def doctor_cal_view(request):
+    return render(request, 'doctor/cal.html')
 
 
 
