@@ -12,18 +12,18 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='appointment',
-            name='app_date_day',
-        ),
-        migrations.RemoveField(
-            model_name='appointment',
-            name='app_date_month',
-        ),
-        migrations.RemoveField(
-            model_name='appointment',
-            name='app_date_year',
-        ),
+        # migrations.RemoveField(
+        #     model_name='appointment',
+        #     name='app_date_day',
+        # ),
+        # migrations.RemoveField(
+        #     model_name='appointment',
+        #     name='app_date_month',
+        # ),
+        # migrations.RemoveField(
+        #     model_name='appointment',
+        #     name='app_date_year',
+        # ),
         migrations.AddField(
             model_name='appointment',
             name='appointment_date',
