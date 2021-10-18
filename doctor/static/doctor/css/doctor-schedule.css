@@ -146,7 +146,7 @@
     color: var(--primaryColor);
     text-decoration: none;
   }
-  .page-title a:hover, .appointments a:hover{
+  .page-title a:hover, .appointments a:hover {
     color: var(--secondaryColor);
   }
   .page-title img {
