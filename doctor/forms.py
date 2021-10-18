@@ -12,10 +12,12 @@ class ConsultationForm(forms.ModelForm):
     
     class Meta:
         model = Appointment
-        fields = "__all__"
-        widgets = {'app_status': Select(attrs={'class':"review"}, choices=[(0 ,'Review'), (1 ,'Accept')])}
+        exclude = ['health_practitioner', 'patient', 'appointment_date', 'timeslots', 'appt_reason']
+        #fields = '__all__'
+        #widgets = {'app_status': {'class':"review"}} #, choices=[(0 ,'Pending'), (1 ,'Accept'), (2, 'Decline')])}
+        app_status = forms.IntegerField()
         
-
+    
 
 class HealthPractitionerForm(forms.ModelForm):
     CHOICES = (('Blue Cross', 'Blue Cross'), ('Blue Shield', 'Blue Shield'), ('Cigna', 'Cigna'), 
