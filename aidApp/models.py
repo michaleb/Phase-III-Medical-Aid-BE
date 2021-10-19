@@ -39,7 +39,7 @@ class Patient(models.Model):
     patient = models.OneToOneField(User, on_delete=models.CASCADE)
     telephone = PhoneField(blank=True, help_text='Patient phone number')
     # D_O_B = models.DateField(default=tz.now)
-    D_O_B = models.CharField(max_length=20)
+    D_O_B = models.CharField(max_length=20, default=datetime.date.today())
     # age = models.CharField(max_length=5)
     registration_date = models.DateTimeField(auto_now_add=True)
     sex = models.CharField(max_length=20)
@@ -180,7 +180,7 @@ class Appointment(models.Model):
     
     #STATUS = [(0, 'Pending'), (1, 'Accept'), (2, 'Decline')]
 
-    health_practitioner = models.ForeignKey(Health_Practitioner, null=True, on_delete=models.CASCADE) 
+    health_practitioner = models.ForeignKey(Health_Practitioner, null=False, on_delete=models.CASCADE) 
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     appointment_date = models.DateField(default=tz.now)
     timeslots = models.IntegerField(choices=TIMESLOTS, default=0)
