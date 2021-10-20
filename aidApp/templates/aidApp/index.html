@@ -76,7 +76,9 @@
         <p class="mobiletext">Get access to instant medical aid from our pool of experienced doctors. Talk
           to a
           doctor today.</p>
-        <button class="hero-btn">Book An Appointment</button>
+        <a href="{% url 'patient-doctor' %}">
+          <button class="hero-btn">Book An Appointment</button>
+        </a>
       </div>
     </div>
   </section>
@@ -141,7 +143,9 @@
     </div>
   </section>
   <div class="how-outside">
-    <button class=how-btn>Get Started</button>
+    <a href="{% url 'users:signup' %}">
+      <button class=how-btn>Get Started</button>
+    </a>
   </div>
   <!-- Doctors Section v2 -->
   <section class="doctors">
@@ -190,7 +194,9 @@
       </div>
     </div>
     <div class="doctors-btn">
-      <button class="view-doctors-btn">View Doctors</button>
+      <a href="{% url 'patient-doctor' %}">
+        <button class="view-doctors-btn">View Doctors</button>
+      </a>
     </div>
   </section>
 
