@@ -112,3 +112,6 @@ def handler404(request, *args, **argv):
 
 def error(request):
     return render(request, 'aidApp/error.html')
+
+def forgot_password(request):
+    return render(request, 'aidApp/forgot-password.html')
