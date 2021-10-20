@@ -14,7 +14,7 @@
   body {
       margin: 0;
       padding:0;
-      color: var(--primaryText);
+      color: #3a5df8;
       font-family: "Open Sans", sans-serif;
   }
   
@@ -167,7 +167,7 @@
   .content {
       grid-area: content;
       margin: 1rem;
-      text-align: center;
+      text-align: left;
   }
   .content img {
       max-width: 100%;
@@ -256,6 +256,79 @@
    
   }
 
+  /* New Calendar Styling */
+
+  .calendar {
+    width: 98%;
+    margin: auto;
+    font-size: 13px;
+  }
+  
+  .calendar tr, .calendar td {
+    border: 1px solid #C3C7D2;
+  }
+  
+  .calendar th {
+    padding: 10px;
+    text-align: center;
+    font-size: 19px;
+  }
+  
+  .calendar td {
+    width: 200px;
+    height: 150px;
+    padding: 20px 0px 0px 5px;
+  }
+  
+  .month {
+    font-size: 25px;
+  }
+  
+  .date {
+    font-size: 16px;
+  }
+  
+  ul {
+    height: 100%;
+    padding: 0px 5px 0px 20px;
+  }
+  
+  a {
+    color: #3d3af8;
+  }
+
+  .left {
+    float: left;
+  }
+  
+  .right {
+    float: right;
+  }
+  
+  .btn {
+    outline: none;
+    color: #3d3af8f2;
+    background-color: transparent;
+    box-shadow: 0 0 0 0;
+  }
+  
+  .clearfix {
+    margin: 15px;
+  }
+
+  .form {
+    margin: auto;
+  }
+  
+  .form input, .form select, .form textarea {
+    border-radius: 5px;
+    border: 1px solid #17a2b8;
+    outline: none;
+    background: none;
+    padding: 5px;
+    width: 100%;
+  }
+
   /* Calendar Styling */
 
   .clearfix:after { 
@@ -278,7 +351,7 @@
   .content {
     background-color: #F9F9F9;
     border-radius: 10px;
-    color: var(--secondaryText);
+    color: #180126b8;
     border: 1px solid #C3C7D2; 
     padding: 20px 20px 20px 0px;
   }

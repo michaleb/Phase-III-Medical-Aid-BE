@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone as tz, tree
 from django.contrib.auth.models import User
 from django.db.models.fields import TextField
@@ -197,5 +198,10 @@ class Appointment(models.Model):
     #@property
     #def status(self):
     #    return self.STATUS[self.app_status][1]
+
+    @property
+    def get_html_url(self):
+        url = reverse('event_edit', args=(self.id,))
+        return f'<a href="{url}"> {self.patient} </a>'
 
      
