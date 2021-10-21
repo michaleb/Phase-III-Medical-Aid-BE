@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.mail import send_mail, get_connection
 from django.db.models import Q
-import datetime
+import ast, datetime
 from django.utils.dateparse import parse_date
 from django.conf import settings
 from django.template.defaulttags import register
@@ -160,7 +160,7 @@ def DocProfile(request, id=None):
             'specialty' : hp.specialty,
             'consultation_times' : hp.consultation_times,
             'clinics' : cl,
-            'insurance_accepted' : hp.insurance_accepted,
+            'insurance_accepted' : ast.literal_eval(hp.insurance_accepted),
             'languages' : hp.languages,
             'accepting_new_patients' : hp.accepting_new_patients,
             'reviews': hp.reviews,
@@ -190,7 +190,7 @@ def CreateAppointment(request, id=None):
             'specialty' : hp.specialty,
             #'consultation_times' : hp.consultation_times,
             'clinics' : cl,
-            'insurance_accepted' : hp.insurance_accepted,
+            'insurance_accepted' : ast.literal_eval(hp.insurance_accepted),
             'languages' : hp.languages,
             'accepting_new_patients' : hp.accepting_new_patients,
             'reviews': hp.reviews,
