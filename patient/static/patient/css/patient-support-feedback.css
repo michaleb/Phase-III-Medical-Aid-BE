@@ -30,6 +30,7 @@ p {
 }
 
 .back {
+    font-weight: 700;
     margin-left: 30px;
     text-decoration: none;
 }
