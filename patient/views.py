@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.mail import send_mail, get_connection
 from django.db.models import Q
-import datetime
+import ast, datetime
 from django.utils.dateparse import parse_date
 from django.conf import settings
 from django.template.defaulttags import register
