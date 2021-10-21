@@ -56,17 +56,20 @@ class Patient(models.Model):
 
 class Patient_Contact_Info(models.Model):
     
-    patient = models.OneToOneField('Patient', null=True, on_delete=models.CASCADE)
+    patient = models.OneToOneField('Patient', on_delete=models.CASCADE)
     address_1 = models.CharField(max_length= 30, blank=True, null=True)
     address_2 = models.CharField(max_length= 30,blank=True, null=True)
     city = models.CharField(max_length= 30,blank=True, null=True)
     state = models.CharField(max_length= 30,blank=True, null=True)
     zip_code = models.CharField(max_length= 10,blank=True, null=True)
+
+    def __str__(self):
+        return User.objects.get(patient=self.patient).get_full_name()
     
     
 class Emergency_Contact_Info(models.Model):
 
-    patient = models.OneToOneField('Patient', null=True, on_delete=models.CASCADE)
+    patient = models.OneToOneField('Patient', on_delete=models.CASCADE)
     name = models.CharField(max_length= 30, blank=True, null=True) 
     relation = models.CharField(max_length=30,blank=True, null=True)
     #phone_number = models.CharField(max_length= 30, blank=True, null=True)
@@ -77,13 +80,16 @@ class Emergency_Contact_Info(models.Model):
     city = models.CharField(max_length= 30, blank=True, null=True)
     state = models.CharField(max_length= 30, blank=True, null=True)
     zip_code = models.CharField(max_length= 10, blank=True, null=True)
+
+    def __str__(self):
+        return User.objects.get(patient=self.patient).get_full_name()
     
 
 
 class Medical_History(models.Model):
 
-    patient = models.ForeignKey('Patient', null=True, on_delete=models.CASCADE)
-    health_practitioner = models.ForeignKey('Health_Practitioner', null=True, on_delete=models.SET_NULL)
+    patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
+    health_practitioner = models.ForeignKey('Health_Practitioner', on_delete=models.CASCADE)
     date_visited = models.DateField(default=tz.now)
     patient_concerns = TextField(blank=True, null=True)
     heart_rate = models.IntegerField(blank=True, null=True)
@@ -178,9 +184,7 @@ class Appointment(models.Model):
                 (7, '4:00 PM'),
                 (8, '5:00 PM')]
     
-    #STATUS = [(0, 'Pending'), (1, 'Accept'), (2, 'Decline')]
-
-    health_practitioner = models.ForeignKey(Health_Practitioner, null=True, on_delete=models.CASCADE) 
+    health_practitioner = models.ForeignKey(Health_Practitioner, on_delete=models.CASCADE) 
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     appointment_date = models.DateField(default=tz.now)
     timeslots = models.IntegerField(choices=TIMESLOTS, default=0)
@@ -194,8 +198,6 @@ class Appointment(models.Model):
     def time(self):
         return self.TIMESLOTS[self.timeslots][1]
 
-    #@property
-    #def status(self):
-    #    return self.STATUS[self.app_status][1]
+    
 
      
