@@ -61,10 +61,22 @@
                 </li>
             </ul>
         </nav>
+
+        <div class="content-wrapper">
+            <!--Page Title-->
+            <div class="page-title">
+                <div class="back">
+                    <p>
+                    <a href="{% url 'doctor-consultations' %}">
+                        &#60; Back</a></p>
+                </div>
+                <h1>Patient Profile</h1>
+            </div>
+
         <!-- Profile -->
         <section class="profile bubble-style">
             <div class="profile">
-                <img src="{% static 'doctor/images/doctor-profile/bostickprofile.svg' %}" alt="image of current user" class="userPic" />
+                <img src="{% static 'doctor/images/doctor-dash/patient-icon.png' %}" alt="image of current user" class="userPic" />
                 <div class="current-user">
                     <h1>{{patient}}</h1>
                 </div>
@@ -105,20 +117,20 @@
         <section class="request-buttons bubble-style">
 
             {% if messages %} 
-                <ul class="message">
-                    {% for message in messages %} 
-                    <b{% ifequal message.tags error %}></b> 
-                    <div class="alert alert-error">{{message}}</div> 
-                    {% else %} 
-                    <div class="alert alert-success">{{message}}</div>
-                    {% endifequal %} 
-                    {% endfor %}
-                </ul>
+            <ul class="message">
+                {% for message in messages %} 
+                <li><b{% ifequal message.tags error %}></b></li> 
+                <div class="alert alert-error">{{message}}</div> 
+                {% else %} 
+                <div class="alert alert-success">{{message}}</div>
+                {% endifequal %} 
+                {% endfor %}
+            </ul>
 
             {% else %} 
             <form action="" method="POST">
                 {% csrf_token %} 
-                                              
+                                                      
                 <div class="big-decline-btn">
                     <button type="submit" button class="review" name="app_status" value="2">Decline</button>
                 </div>
@@ -126,10 +138,10 @@
                 <div class="big-accept-btn">
                     <button type="submit" button class="accept" name="app_status" value="1">Accept</button>
                 </div>
-                      
             </form> 
-            {% endif %}  
-        </section>      
+            {% endif %} 
+        </section>  
+
         <!-- Contact info-->
         <section class="contact">
             <div class="heading">
@@ -179,9 +191,8 @@
                     <div class="error response">
                         <p>No emergency contact information found</p>
                     </div>    
-                    
-                </div>
-            {% endif %}
+                {% endif %} 
+            </div>    
         
         </section>
         <!-- Recent visits   -->
@@ -211,30 +222,7 @@
             </div>
             {% endfor %}
         </section>    
-            {% comment %}<div class="visit-bubble bubble-style">
-                <div class="reason">
-                    <p>CT scan of right shoulder</p>
-                </div>
-                <div class="date">
-                    <p>6/7/21</p>
-                </div>
-                <div class="time">
-                    <p>11:00am</p>
-                </div>
-            </div>
-            <div class="visit-bubble bubble-style">
-                <div class="reason">
-                    <p>Brain MRI for headaches</p>
-                </div>
-                <div class="date">
-                    <p>6/7/21</p>
-                </div>
-                <div class="time">
-                    <p>11:00am</p>
-                </div>
-            </div>{% endcomment %} 
-            
-        
+         
         <!-- Medical Records   -->
         <section class="records">
             <div class="heading">
@@ -259,27 +247,10 @@
                 </div> 
             </div>
             {% endif %} 
-                        
-            {% comment %}<div class="records-bubble bubble-style">
-                <div class="test">
-                    <h3>CT Scan</h3>
-                    <p>6/28/21</p>
-                </div>
-                <div class="results-btn">
-                    <button class="results">Results</button>
-                </div>
-            </div>
-            <div class="records-bubble bubble-style">
-                <div class="test">
-                    <h3>MRI Scan</h3>
-                    <p>6/28/21</p>
-                </div>
-                <div class="results-btn">
-                    <button class="results">Results</button>
-                </div>
-            </div>{% endcomment %}
-            
+               
         </section>
+        </div>  
+    </div>      
 </body>
 
 </html>

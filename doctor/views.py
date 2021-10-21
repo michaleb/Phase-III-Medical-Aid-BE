@@ -142,8 +142,6 @@ def doctor_confirm_view(request, id=None):
             messages.error(request, "Appointment has been removed from your schedule")
             #return redirect('doctor-consultations')
     
-    
-    
     form = ConsultationForm(request.GET)
     context = {}
 
@@ -151,8 +149,12 @@ def doctor_confirm_view(request, id=None):
     hp = Health_Practitioner.objects.get(health_practitioner=hp_user)    
     patient = Appointment.objects.get(id=id).patient
     user = User.objects.get(patient=patient)
-    patient_contact = Patient_Contact_Info.objects.get(patient=patient)
     recent_visit = Appointment.objects.filter(Q(health_practitioner=hp)& Q(patient=patient)& Q(app_status=1)& Q(appointment_date__lt=date.today()))
+    
+    try:
+        patient_contact = Patient_Contact_Info.objects.get(patient=patient)
+    except:
+        patient_contact = None
     
     try:
         patient_econtact = Emergency_Contact_Info.objects.get(patient=patient)
