@@ -119,7 +119,7 @@
             {% if messages %} 
             <ul class="message">
                 {% for message in messages %} 
-                <b{% ifequal message.tags error %}></b> 
+                <li><b{% ifequal message.tags error %}></b></li> 
                 <div class="alert alert-error">{{message}}</div> 
                 {% else %} 
                 <div class="alert alert-success">{{message}}</div>
@@ -130,7 +130,7 @@
             {% else %} 
             <form action="" method="POST">
                 {% csrf_token %} 
-                                              
+                                                      
                 <div class="big-decline-btn">
                     <button type="submit" button class="review" name="app_status" value="2">Decline</button>
                 </div>
@@ -138,10 +138,10 @@
                 <div class="big-accept-btn">
                     <button type="submit" button class="accept" name="app_status" value="1">Accept</button>
                 </div>
-                      
             </form> 
-            {% endif %}  
-        </section>      
+            {% endif %} 
+        </section>  
+
         <!-- Contact info-->
         <section class="contact">
             <div class="heading">
