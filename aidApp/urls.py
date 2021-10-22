@@ -15,6 +15,7 @@ urlpatterns = [
     #path('patient-appt/<int:id>', views.CreateAppointment, name='patient-appt'),
     #path('patient-doctor-profile/<int:id>', views.DocProfile, name='patient-doctor-profile'),
     path('forgot-password/', views.forgot_password, name = "forgot-password"),
+    path('check-email/', views.check_email, name = "check-email"),
   ]
 
 
