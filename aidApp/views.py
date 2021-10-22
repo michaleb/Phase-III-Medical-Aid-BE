@@ -114,4 +114,22 @@ def error(request):
     return render(request, 'aidApp/error.html')
 
 def forgot_password(request):
-    return render(request, 'aidApp/forgot-password.html')
+    if request.method == "POST":
+        if request.POST.get('email'):
+            email = request.POST.get('email')
+            send_mail(
+                'Password Reset',
+                'Please follow these instructions to reset your password.  Thank you!',
+                'kornegayjay@gmail.com',
+                [email],
+                fail_silently=False,
+                )
+            return redirect('check-email')
+        else:
+            messages.error(request, 'You must enter a valid email address.  Submit unsuccessful.')
+            return render(request, 'aidApp/forgot-password.html') 
+    else:
+        return render(request, 'aidApp/forgot-password.html')
+
+def check_email(request):
+    return render(request, 'aidApp/check-email.html')
