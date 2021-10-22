@@ -148,12 +148,12 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-# EMAIL_BACKEND='django.core.mail.backends.filebased.EmailBackend'
-# EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
+EMAIL_BACKEND='django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
 
-EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
-EMAIL_HOST = os.getenv('EMAIL_HOST')
-EMAIL_USE_TLS = os.getenv('EMAIL_PORT')
-EMAIL_PORT = os.getenv('EMAIL_PORT')
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+#EMAIL_BACKEND = os.getenv('EMAIL_BACKEND')
+# EMAIL_HOST = os.getenv('EMAIL_HOST')
+# EMAIL_USE_TLS = os.getenv('EMAIL_PORT')
+# EMAIL_PORT = os.getenv('EMAIL_PORT')
+# EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
