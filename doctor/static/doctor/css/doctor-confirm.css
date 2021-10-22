@@ -23,6 +23,7 @@
   h1 {
     font-size: 26px;
     font-weight: 400;
+    text-align: center;
   }
   h2 {
     font-size: 20px;
@@ -34,7 +35,7 @@
   }
   p {
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 700;
   }
   /* ˅ This is so all the content sections have the same border, color and are vertically centered */
   .bubble-style{
@@ -186,6 +187,14 @@
   border-radius: 5px;
   padding: 10px;
   margin-bottom: 5px;
+  }
+
+  .page-title a, .appointments a {
+    color: var(--primaryColor);
+    text-decoration: none;
+  }
+  .page-title a:hover, .appointments a:hover {
+    color: var(--secondaryColor);
   }
 
   /************************Styling for Laptops and Small Screens 769px and up*****************************/
