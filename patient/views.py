@@ -151,6 +151,12 @@ def DocProfile(request, id=None):
     #user = User.objects.get(id = id)
     hp = Health_Practitioner.objects.get(id=id) #health_practitioner_id=id)
     cl = Clinic.objects.filter(health_practitioner=hp)
+
+    if hp.insurance_accepted == 'Blue Cross':
+        hp.insurance_accepted = [hp.insurance_accepted]
+    else:
+         hp.insurance_accepted = ast.literal_eval(hp.insurance_accepted) 
+
     form = DocProfileForm()
         
     form = {'health_practitioner' : hp,
@@ -181,7 +187,12 @@ def CreateAppointment(request, id=None):
     patient = Patient.objects.get(patient=user)
    
     hp_appointments = list(Appointment.objects.filter(health_practitioner=hp).values())
-        
+
+    if hp.insurance_accepted == 'Blue Cross':
+        hp.insurance_accepted = [hp.insurance_accepted]
+    else:
+         hp.insurance_accepted = ast.literal_eval(hp.insurance_accepted)   
+
     context = {}
     gform = {'health_practitioner' : hp,
             'professional_title' : hp.professional_title,
