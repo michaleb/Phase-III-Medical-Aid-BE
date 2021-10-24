@@ -38,7 +38,7 @@ def support_view(request):
             send_mail(
                 'Contact Support',
                 'Your message has been received.  If needed, someone will follow up with you shortly.  Thank you!',
-                'devops4zuri@gmail.com',
+                'kornegayjay@gmail.com',
                 [email],
                 fail_silently=False,
                 )
