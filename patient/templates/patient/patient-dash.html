@@ -66,7 +66,7 @@
             <div class="welcomeAlerts">
                 <h1>Welcome to your dashboard, {{ patient.patient.first_name }}</h1>
                 {% if prev_appointment %}
-                <p>Your last appointment was on <b>{{prev_appointment.0}}</b> at <b>{{prev_appointment.1}}</b> with <b>Dr. {{prev_appointment.2}}</b></p><!--6/28/21-->
+                <p>Your last appointment was on <b>{{prev_appointment.appointment_date}}</b> at <b>{{prev_appointment.time}}</b> with <b>Dr. {{prev_appointment.health_practitioner}}</b></p><!--6/28/21-->
                 <p>You have <b>{{pending_app_count}}</b> upcoming appointments scheduled</p>
                 {% else %} 
                 <p>You have no previous appointments</p>
