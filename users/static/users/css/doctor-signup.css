@@ -67,6 +67,7 @@ align-items: center;
 
 .signup-btn:hover, button:hover{
   background: #eef0f6;
+  cursor: pointer;
 }
 
 ul.nav-tabs,

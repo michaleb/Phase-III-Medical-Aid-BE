@@ -145,6 +145,7 @@ h2 {
 
 .login-btn:hover, button:hover{
   background: #eef0f6;
+  cursor: pointer;
 }
 
    label.checkbox, .password {
