@@ -149,7 +149,19 @@
                             <div>Fri</div>
                             <div>Sat</div>
                         </div>
-                        <div class="days"></div>
+                        <div class="days">
+                            <script>
+                                $(function() {
+                                  $('#id_form.appointment_date').patient-appt({
+                                    format:'YYYY-MM-DD',
+                                    daysOfWeekDisabled: [0],
+                                    //startDate:'0d',
+                                    //yearRange:'2021:2024',
+                                                                      
+                                  });
+                                });
+                            </script>
+                        </div>
                         </div>
                         <!--{{form.appointment_date}}-->
                     </div>
@@ -158,7 +170,10 @@
                         <h2 class="heading">Available Time Slots</h2>
                         <div class="available-times-wrapper border-style">
                             <div class="available-times">
-                                <p>9:00 AM</p>
+                                {% for timeslot in form.timeslots %} 
+                                <option value="">{{timeslot}}</option>
+                                {% endfor %}
+                                {% comment %}<p>9:00 AM</p>
                                 <p>10:00 AM</p>
                                 <p class="available-time">11:00 AM</p>
                                 <p>12:00 PM</p>
@@ -168,7 +183,7 @@
                             <div class="available-times">
                                 <p class="available-time">3:00 PM</p>
                                 <p>4:00 PM</p>
-                                <p>5:00 PM</p>
+                                <p>5:00 PM</p> {% endcomment %}
                             </div>
                         </div>
                     </div>
@@ -176,7 +191,7 @@
                         <h2 class="heading">Reason for Appointment</h2>
                         <p>Max 200 Characters</p>
                         <div class="reason">
-                        <textarea class="border-style" id="appt_reason" name="appt_reason" rows="16" value="{{form.appt_reason}}">
+                        <textarea class="border-style" name="appt_reason" rows="16" value="{{form.appt_reason}}">
                         <button class="schedule-btn" type="submit">Make an Appointment</button></div>
                     </div>
 
