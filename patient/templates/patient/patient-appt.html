@@ -129,51 +129,51 @@
                 <section class="appointment">
                     <!--Calender from codepen-->
                     <div class="cal-cont">
-                    <h2 class="heading">Available Dates</h2>
-                    <div class="container">
-                        <div class="calendar">
-                        <div class="month">
-                            <i class="fas fa-angle-left prev"></i>
-                            <div class="date">
-                            <h1></h1>
-                            <p></p>
+                        <h2 class="heading">Available Dates</h2>
+                        <div class="container">
+                            <div class="calendar">
+                                <div class="month">
+                                    <i class="fas fa-angle-left prev"></i>
+                                    <div class="date">
+                                        <h1></h1>
+                                        <p></p>
+                                    </div>
+                                    <i class="fas fa-angle-right next"></i>
+                                </div>
+                                <div class="weekdays">
+                                    <div>Sun</div>
+                                    <div>Mon</div>
+                                    <div>Tue</div>
+                                    <div>Wed</div>
+                                    <div>Thu</div>
+                                    <div>Fri</div>
+                                    <div>Sat</div>
+                                </div>
+                                <div class="days"></div>
+                                    {% comment %}<script>
+                                        $(function() {
+                                        $('#id_form.appointment_date').patient-appt({
+                                            format:'YYYY-MM-DD',
+                                            daysOfWeekDisabled: [0],
+                                            //startDate:'0d',
+                                            //yearRange:'2021:2024',
+                                                                            
+                                        });
+                                        });
+                                    </script>{% endcomment%}
+                                
                             </div>
-                            <i class="fas fa-angle-right next"></i>
-                        </div>
-                        <div class="weekdays">
-                            <div>Sun</div>
-                            <div>Mon</div>
-                            <div>Tue</div>
-                            <div>Wed</div>
-                            <div>Thu</div>
-                            <div>Fri</div>
-                            <div>Sat</div>
-                        </div>
-                        <div class="days">
-                            <script>
-                                $(function() {
-                                  $('#id_form.appointment_date').patient-appt({
-                                    format:'YYYY-MM-DD',
-                                    daysOfWeekDisabled: [0],
-                                    //startDate:'0d',
-                                    //yearRange:'2021:2024',
-                                                                      
-                                  });
-                                });
-                            </script>
-                        </div>
-                        </div>
                         <!--{{form.appointment_date}}-->
-                    </div>
+                        </div>
                     </div>
                     <div class="time">
                         <h2 class="heading">Available Time Slots</h2>
                         <div class="available-times-wrapper border-style">
                             <div class="available-times">
-                                {% for timeslot in form.timeslots %} 
+                                {% comment %} {% for timeslot in form.timeslots %} 
                                 <option value="">{{timeslot}}</option>
-                                {% endfor %}
-                                {% comment %}<p>9:00 AM</p>
+                                {% endfor %} {% endcomment %}
+                                <p>9:00 AM</p>
                                 <p>10:00 AM</p>
                                 <p class="available-time">11:00 AM</p>
                                 <p>12:00 PM</p>
@@ -183,7 +183,7 @@
                             <div class="available-times">
                                 <p class="available-time">3:00 PM</p>
                                 <p>4:00 PM</p>
-                                <p>5:00 PM</p> {% endcomment %}
+                                <p>5:00 PM</p> 
                             </div>
                         </div>
                     </div>
@@ -191,7 +191,7 @@
                         <h2 class="heading">Reason for Appointment</h2>
                         <p>Max 200 Characters</p>
                         <div class="reason">
-                        <textarea class="border-style" name="appt_reason" rows="16" value="{{form.appt_reason}}">
+                        <textarea class="border-style" rows="16" maxlength="200" name="appt_reason" value=>{{form.appt_reason}}</textarea> 
                         <button class="schedule-btn" type="submit">Make an Appointment</button></div>
                     </div>
 
