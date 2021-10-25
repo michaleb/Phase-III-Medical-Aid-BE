@@ -5,7 +5,7 @@ from calendar import HTMLCalendar
 from aidApp.models import Appointment
 
 class Calendar(HTMLCalendar):
-	def __init__(self, hp, year=None, month=None,):
+	def __init__(self, hp, year=None, month=None):
 		self.year = year
 		self.month = month
 		self.hp = hp
@@ -35,7 +35,7 @@ class Calendar(HTMLCalendar):
 	# filter events by year and month
 	def formatmonth(self, withyear=True):
 		
-		events = Appointment.objects.filter(appointment_date__year=self.year, appointment_date__month=self.month, health_practitioner=self.hp)
+		events = Appointment.objects.filter(appointment_date__year=self.year, appointment_date__month=self.month, health_practitioner=self.hp, app_status=1)
 
 		cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendar">\n'
 		cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n'
