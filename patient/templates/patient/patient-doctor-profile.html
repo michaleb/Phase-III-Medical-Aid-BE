@@ -73,7 +73,9 @@
                         <p class="dr-info-detail"><b>{{form.clinics.0}}</b></p><!--Cleveland General Hospital-->
                         
                         <p class="dr-info-title">Insurance Accepted</p>
-                        <p class="dr-info-detail"><b>{{form.insurance_accepted}}</b></p><!--Blue Cross, Cigna, and Shield-->
+                        {% for item in form.insurance_accepted %}
+                        <p class="dr-info-detail"><b>{{item}}</b></p>
+                        {% endfor %}
                     </div>
                     <div class="dr-info-group">
                     <p class="dr-info-title">Languages</p>
