@@ -88,7 +88,9 @@
                         <p class="dr-info-detail"><b>{{gform.clinics.0}}</b></p><!--Cleveland General Hospital-->
 
                         <p class="dr-info-title">Insurance Accepted</p>
-                        <p class="dr-info-detail"><b>{{gform.insurance_accepted}}</b></p><!--Blue Cross, Cigna, and Shield-->
+                        {% for item in  gform.insurance_accepted %} 
+                        <p class="dr-info-detail"><b>{{item}}</b></p><!--Blue Cross, Cigna, and Shield-->
+                        {% endfor %}
                     </div>
                     <div class="dr-info-group">
                     <p class="dr-info-title">Languages</p>
@@ -136,7 +138,7 @@
                 <section class="appointment">
 
                     <div class="date">
-                        <h3 class="heading">Available Dates</h3>
+                        <h2 class="heading">Available Dates</h2>
                         <div class="calendar border-style">
                             <div class="calendar__opts">
                                 {{form.appointment_date}}
@@ -157,7 +159,7 @@
                         </div>
                     </div>
                     <div class="time">
-                        <h3 class="heading">Available Time Slots</h3>
+                        <h2 class="heading">Available Time Slots</h2>
                         <div class="available-times-wrapper border-style">
                             <select  size='12' name="timeslots" id="timeslots"> 
                                 <div class="available-times"> 
@@ -171,18 +173,14 @@
                     </div>    
                                     
                     <div class="reason-wrapper">
-                        <h3 class="heading">Reason for Appointment</h3>
+                        <h2 class="heading">Reason for Appointment</h2>
                         <p>Max 200 Characters</p>
                         <div class="reason">
-                        <!--textarea class="border-style" id="appt-reason" name="appt_reason" row=16></textarea-->
-                        <p><value=>{{form.appt_reason}}</p>  
-                        
-                        
-                        <!--button class="schedule-btn">Make an Appointment</button></div-->
-                        <input type="submit" class="schedule-btn" value="Make an Appointment" />
-                    </div>
-                        
-                        
+                            <textarea class="border-style" rows="12" name="appt_reason">{{appt_reason}}</textarea> 
+                            <br><button class="schedule-btn" type="submit">Make an Appointment</button>
+                        </div>
+                        <!--input type="submit" class="schedule-btn" value="Make an Appointment" /-->
+                   </div>
                 </section>
             </form>
             {% endif %}

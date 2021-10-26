@@ -58,7 +58,8 @@ def patient_dash_view(request):
     user = User.objects.get(username = request.user.username)
     patient = Patient.objects.get(patient = user)
     appointment = Appointment.objects.filter(Q(app_status=1)& Q(appointment_date__lt=date.today())& Q(patient=patient))
-    pending_appointments = Appointment.objects.filter(Q(app_status=1)& Q(appointment_date__gte=date.today())& Q(patient=patient)).count
+    pending_appointments = Appointment.objects.filter(Q(appointment_date__gte=date.today())& Q(patient=patient))
+    pending_app_count = pending_appointments.count()
     
     #Select most recent appointment details to render on page
     if appointment:
@@ -66,17 +67,18 @@ def patient_dash_view(request):
         for app in appointment:
             if app.appointment_date >= recent_date:
                 recent_date = app.appointment_date
-                app_time = Appointment.TIMESLOTS[app.timeslots][1]
-                app_doc = app.health_practitioner
-                app_details = [recent_date, app_time, app_doc]
+                #app_time = app.time #Appointment.TIMESLOTS[app.timeslots][1]
+                #app_doc = app.health_practitioner
+                #app_details = [recent_date, app_time, app_doc]
     
     else:
-        app_details = [None]
+        app = []
             
     context = {
         'patient': patient,
-        'prev_appointment': app_details,
+        'prev_appointment': app, #app_details,
         'pending_appointments': pending_appointments,
+        'pending_app_count': pending_app_count,
     }
 
     return render(request, 'patient/patient-dash.html', context)
@@ -151,6 +153,12 @@ def DocProfile(request, id=None):
     #user = User.objects.get(id = id)
     hp = Health_Practitioner.objects.get(id=id) #health_practitioner_id=id)
     cl = Clinic.objects.filter(health_practitioner=hp)
+
+    if hp.insurance_accepted == 'Blue Cross':
+        hp.insurance_accepted = [hp.insurance_accepted]
+    else:
+         hp.insurance_accepted = ast.literal_eval(hp.insurance_accepted) 
+
     form = DocProfileForm()
         
     form = {'health_practitioner' : hp,
@@ -180,8 +188,14 @@ def CreateAppointment(request, id=None):
     user = User.objects.get(id=request.user.id) #id=2 for testing or id=request.user.id)
     patient = Patient.objects.get(patient=user)
    
-    hp_appointments = list(Appointment.objects.filter(health_practitioner=hp).values())
-        
+    #hp_appointments = list(Appointment.objects.filter(health_practitioner=hp).values())
+    hp_appointments = Appointment.objects.filter(Q(health_practitioner=hp)& Q(app_status=1))
+
+    if hp.insurance_accepted == 'Blue Cross':
+        hp.insurance_accepted = [hp.insurance_accepted]
+    else:
+         hp.insurance_accepted = ast.literal_eval(hp.insurance_accepted)   
+
     context = {}
     gform = {'health_practitioner' : hp,
             'professional_title' : hp.professional_title,
@@ -202,15 +216,14 @@ def CreateAppointment(request, id=None):
         
         form = AppCreateForm(request.POST)
         free_timeslot = True
-
+        
         # check if form data is valid
         if form.is_valid():
-            
             for appointment in hp_appointments:
-                if appointment['appointment_date'] == form.cleaned_data['appointment_date']:
-                    if appointment['timeslots'] == form.cleaned_data['timeslots']:
+                if appointment.appointment_date == form.cleaned_data['appointment_date']:
+                    if appointment.timeslots == form.cleaned_data['timeslots']:
                         free_timeslot = False
-                            
+
             app_date = form.cleaned_data['appointment_date']
             timeslot= form.cleaned_data['timeslots']
             app_reason = form.cleaned_data['appt_reason']
@@ -224,7 +237,7 @@ def CreateAppointment(request, id=None):
                                                         appt_reason=app_reason,
                                                         app_status=0)
                 appointment.save()
-                hp.appointments_pending = hp.appointments_pending +1
+                #hp.appointments_pending = hp.appointments_pending +1
                 hp.save()
 
                 appointment_email = app_reason+" "+ str(app_date) 

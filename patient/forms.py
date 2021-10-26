@@ -36,11 +36,12 @@ class AppCreateForm(forms.ModelForm):
     class Meta:
         model = Appointment
         fields = ['appointment_date', 'timeslots', 'appt_reason']
+        
         widgets = {
             'appointment_date': DateWidget(
                 #attrs={'id': 'appointment_date'}, usel10n=False, bootstrap_version=3,
-                attrs={'class':'date-input'}, usel10n=False, bootstrap_version=3,)}
-        '''
+                attrs={'class':'date-input'}, usel10n=False, bootstrap_version=3,
+        
                 options={
                     'minView': 2,  # month view
                     'maxView': 3,  # year view
@@ -52,5 +53,5 @@ class AppCreateForm(forms.ModelForm):
                 }),
                                
         }
-        '''
+        
     
