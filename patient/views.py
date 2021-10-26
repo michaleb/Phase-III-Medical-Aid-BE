@@ -216,16 +216,14 @@ def CreateAppointment(request, id=None):
         
         form = AppCreateForm(request.POST)
         free_timeslot = True
-        #appo_reason = request.GET["appt_reason"]
-
+        
         # check if form data is valid
         if form.is_valid():
-            
             for appointment in hp_appointments:
-                if appointment['appointment_date'] == form.cleaned_data['appointment_date']:
-                    if appointment['timeslots'] == form.cleaned_data['timeslots']:
+                if appointment.appointment_date == form.cleaned_data['appointment_date']:
+                    if appointment.timeslots == form.cleaned_data['timeslots']:
                         free_timeslot = False
-                            
+
             app_date = form.cleaned_data['appointment_date']
             timeslot= form.cleaned_data['timeslots']
             app_reason = form.cleaned_data['appt_reason']
@@ -239,7 +237,7 @@ def CreateAppointment(request, id=None):
                                                         appt_reason=app_reason,
                                                         app_status=0)
                 appointment.save()
-                hp.appointments_pending = hp.appointments_pending +1
+                #hp.appointments_pending = hp.appointments_pending +1
                 hp.save()
 
                 appointment_email = app_reason+" "+ str(app_date) 
