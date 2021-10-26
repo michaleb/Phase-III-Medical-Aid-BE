@@ -23,7 +23,7 @@
     <div class="wrapper">
         <!--Header-->
         <header><a href="{% url 'homepage' %}"><img src="{% static 'patient/images/patient-images/logo.svg' %}" class="logo"></a>
-            <button class="hamburger" id="hamburger"><img src="{% static 'images/logo/fi_menu.svg' %}"></button>
+            <button class="hamburger" id="hamburger"><img src="{% static 'patient/images/logo/fi_menu.svg' %}"></button>
         </header>
         <!--Navigation-->
         <nav>
@@ -66,11 +66,11 @@
             <div class="welcomeAlerts">
                 <h1>Welcome to your dashboard, {{ patient.patient.first_name }}</h1>
                 {% if prev_appointment %}
-                <p>Your last appointment was on <b>{{prev_appointment.0}}</b> at <b>{{prev_appointment.1}}</b> with <b>Dr. {{prev_appointment.2}}</b></p><!--6/28/21-->
-                <p>You have <b>{{pending_appointments}}</b> upcoming appointments scheduled</p>
+                <p>Your last appointment was on <b>{{prev_appointment.appointment_date}}</b> at <b>{{prev_appointment.time}}</b> with <b>Dr. {{prev_appointment.health_practitioner}}</b></p><!--6/28/21-->
+                <p>You have <b>{{pending_app_count}}</b> upcoming appointments scheduled</p>
                 {% else %} 
                 <p>You have no previous appointments</p>
-                <p>You have <b>{{pending_appointments}}</b> upcoming appointments scheduled</p>
+                <p>You have <b>{{pending_app_count}}</b> upcoming appointments scheduled</p>
                 {% endif %}
                 <button class="schedule-btn"><a href="{% url 'patient-doctor' %}">
                 Make an Appointment</a></button>
@@ -128,26 +128,44 @@
             </div>
             <div class="bubble-heading">
                 <p>Specialist<img class="up-down" src="{% static 'patient/images/patient-images/up-down-arrow.svg' %}"></p>
-                <p>Date<img class="up-down"  src="{% static 'patient/images/patient-images/up-down-arrow.svg' %}"></p>
                 <p>Time<img  class="up-down" src="{% static 'patient/images/patient-images/up-down-arrow.svg' %}"></p>
+                <p>Date<img class="up-down"  src="{% static 'patient/images/patient-images/up-down-arrow.svg' %}"></p>
                 <p>Status<img  class="up-down" src="{% static 'patient/images/patient-images/up-down-arrow.svg' %}"></p>
             </div>
+            {% if pending_appointments %} 
+            {% for appointment in pending_appointments %} 
             <div class="visits-bubble bubble-style">
                 <div class="visit">
-                <img src="{% static 'patient/images/patient-images/drcrusher.svg' %}">
-                <p>Dr. Crusher <br>Internal Medicine</p>
+                <img src="{% static 'patient/images/patient-doctor-img/patient-doctor-icon.png' %}">
+                <p>Dr. {{appointment.health_practitioner}} <br>{{appointment.health_practitioner.specialty}}</p><!--Dr. Crusher, Internal Medicine-->
                 </div>
                 <div class="visit-date">
-                    <p>6/29/21</p>
+                    <p>{{appointment.appointment_date}} </p><!--6/29/21-->
                 </div>
                 <div class="visit-time">
-                    <p>9:00am</p>
+                    <p>{{appointment.time }} </p><!--9:00am-->
                 </div>
                 <div class="visit-status">
-                    <p>upcoming</p>
+                    {% ifequal appointment.app_status 0 %}
+                    <p>pending</p>
+                    {% endifequal %}
+                    {% ifequal appointment.app_status 1 %} 
+                    <p>accepted</p>
+                    {% endifequal %}
+                    {% ifequal appointment.app_status 2 %} 
+                    <p>declined</p>
+                    {% endifequal %}
                 </div>
             </div>
+            {% endfor %} 
+            {% else %} 
             <div class="visits-bubble bubble-style">
+                <div class="error response">
+                    <p>No upcoming appointments scheduled</p>
+                </div>  
+            </div>
+            {% endif %}      
+            {% comment %}<div class="visits-bubble bubble-style">
                 <div class="visit">
                     <img src="{% static 'patient/images/patient-images/drpul.svg' %}">
                     <p>Dr. Pulaski <br>Internal Medicine</p>
@@ -176,7 +194,7 @@
                 <div class="visit-status">
                     <p>cancelled</p>
                 </div>
-            </div>
+            </div> {% endcomment %} 
             <div>
                 <a href="#">Previous appointments</a>
             </div>
