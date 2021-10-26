@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-{% load static %} 
+{% load static%}    
 
 <head>
     <meta charset="UTF-8">
@@ -10,24 +10,31 @@
     <link rel="shortcut icon" href="{% static 'aidApp/images/admin-dash/favicon.svg' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
-  />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'patient/css/patient-appt.css' %}">
     <script src="{% static 'patient/js/patient-dash.js' %}" defer></script>
+
+    <!--script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script-->
+    <!--link href="{% static 'aidApp/css/bootstrap.css' %}" rel="stylesheet" type="text/css"/-->
+    <!--script src="{% static 'aidApp/js/bootstrap.js' %}"></script-->
+
+    <!--link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="//cdn.bootcss.com/bootstrap-datetimepicker/4.17.44/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="//cdn.bootcss.com/moment.js/2.17.1/moment.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap-datetimepicker/4.17.44/js/bootstrap-datetimepicker.min.js"></script>
+
+       
+
 </head>
 
 <body>
     <div class="wrapper">
         <!--Header-->
         <header><a href="#"><img src="{% static 'patient/images/patient-images/logo.svg' %}" class="logo"></a>
-            <button class="hamburger" id="hamburger"><img src="../images/admin-dash/fi_menu.svg"></button>
+            <button class="hamburger" id="hamburger"><img src="{% static 'aidApp/images/admin-dash/fi_menu.svg' %}"></button>
         </header>
         <!--Navigation-->
         <nav>
@@ -103,13 +110,14 @@
                         <img src="{% static 'patient/images/patient-doctor-profile-img/star.svg' %}">
                         <img src="{% static 'patient/images/patient-doctor-profile-img/star.svg' %}">
                     </div>
-                    <div class="review">
+                        <div class="review">
                         <p><b>{{gform.reviews}} </b>Reviews</p><!--34-->
                         <p><b>{{gform.patient_comments}} </b>Patient Comments</p><!--30-->
                        
                     </div>
                     
                 </div>
+                
             </section>
             {% if messages %} 
             <ul class="message">
@@ -126,81 +134,60 @@
             {% else %}
             <form action="" method="POST">
                 {% csrf_token %}
+                                           
                 <section class="appointment">
-                    <!--Calender from codepen-->
-                    <div class="cal-cont">
+
+                    <div class="date">
                         <h2 class="heading">Available Dates</h2>
-                        <div class="container">
-                            <div class="calendar">
-                                <div class="month">
-                                    <i class="fas fa-angle-left prev"></i>
-                                    <div class="date">
-                                        <h1></h1>
-                                        <p></p>
-                                    </div>
-                                    <i class="fas fa-angle-right next"></i>
-                                </div>
-                                <div class="weekdays">
-                                    <div>Sun</div>
-                                    <div>Mon</div>
-                                    <div>Tue</div>
-                                    <div>Wed</div>
-                                    <div>Thu</div>
-                                    <div>Fri</div>
-                                    <div>Sat</div>
-                                </div>
-                                <div class="days"></div>
-                                    {% comment %}<script>
-                                        $(function() {
-                                        $('#id_form.appointment_date').patient-appt({
-                                            format:'YYYY-MM-DD',
-                                            daysOfWeekDisabled: [0],
-                                            //startDate:'0d',
-                                            //yearRange:'2021:2024',
-                                                                            
-                                        });
-                                        });
-                                    </script>{% endcomment%}
-                                
+                        <div class="calendar border-style">
+                            <div class="calendar__opts">
+                                {{form.appointment_date}}
+                                <script>
+                                    $(function() {
+                                      $('.date-input' ).datetimepicker({
+                                        format:'YYYY-MM-DD',
+                                        daysOfWeekDisabled: [0],
+                                        //startDate:'0d',
+                                        //yearRange:'2021:2024',
+                                                                          
+                                      });
+                                    });
+                                </script>
                             </div>
-                        <!--{{form.appointment_date}}-->
+                            <p style = "color: var(--primaryColor);", style = "text-align:center">Please select current or future date.</p> 
+                            
                         </div>
                     </div>
                     <div class="time">
                         <h2 class="heading">Available Time Slots</h2>
                         <div class="available-times-wrapper border-style">
-                            <div class="available-times">
-                                {% comment %} {% for timeslot in form.timeslots %} 
-                                <option value="">{{timeslot}}</option>
-                                {% endfor %} {% endcomment %}
-                                <p>9:00 AM</p>
-                                <p>10:00 AM</p>
-                                <p class="available-time">11:00 AM</p>
-                                <p>12:00 PM</p>
-                                <p class="available-time">1:00 PM</p>
-                                <p class="available-time">2:00 PM</p>
-                            </div>
-                            <div class="available-times">
-                                <p class="available-time">3:00 PM</p>
-                                <p>4:00 PM</p>
-                                <p>5:00 PM</p> 
-                            </div>
+                            <select  size='12' name="timeslots" id="timeslots"> 
+                                <div class="available-times"> 
+                                    {% for timeslot in form.timeslots %} 
+                                        <option value="">{{timeslot}}
+                                    {% endfor %}
+                                        
+                                </div>                          
+                            </select>        
                         </div>
-                    </div>
+                    </div>    
+                                    
                     <div class="reason-wrapper">
                         <h2 class="heading">Reason for Appointment</h2>
                         <p>Max 200 Characters</p>
                         <div class="reason">
-                        <textarea class="border-style" rows="16" maxlength="200" name="appt_reason" value=>{{form.appt_reason}}</textarea> 
-                        <button class="schedule-btn" type="submit">Make an Appointment</button></div>
-                    </div>
-
+                            <textarea class="border-style" rows="12" name="appt_reason">{{appt_reason}}</textarea> 
+                            <br><button class="schedule-btn" type="submit">Make an Appointment</button>
+                        </div>
+                        <!--input type="submit" class="schedule-btn" value="Make an Appointment" /-->
+                   </div>
                 </section>
-            </form>    
+            </form>
             {% endif %}
+                
         </main>
     </div>
-    <script src="{% static 'patient/js/patient-appt.js' %}"></script>
-    <script src="script.js"></script>
 </body>
+
 </html>
+
