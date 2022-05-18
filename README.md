@@ -1,4 +1,5 @@
-<h1># Medical-Aid-Group1-BE</h1>
+<img src="aidApp/static/aidApp/images/landing-page/Logo.png" width="200" height="48" />
+<h1> Medical-Aid-Group1-BE</h1>
 <h3>Follow these steps closely to set up your project</h3>
 <ol>
 	<li><p>Clone this branch using the command "git clone https://github.com/reskillamericans/Medical-Aid-Group1-BE.git"</p> </li>
